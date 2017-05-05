@@ -1,0 +1,96 @@
+from bot_backend import *
+from ernie import get_random_xkcd_image
+from ernie import get_random_ernie_image
+from ernie import get_random_hagar_image
+import time, datetime, random, requests, urllib, telegram
+
+class PlanBot(bot):
+    def strTimeProp(self, start, end, format, prop):
+        """Get a time at a proportion of a range of two formatted times.
+            start and end should be strings specifying times formated in the
+            given format (strftime-style), giving an interval [start, end].
+            prop specifies how a proportion of the interval to be taken after
+            start.  The returned time will be in the specified format.
+            """
+        stime = time.mktime(time.strptime(start, format))
+        etime = time.mktime(time.strptime(end, format))
+        ptime = stime + prop * (etime - stime)
+        return time.strftime(format, time.localtime(ptime))
+
+    def randomDate(self, start, end, prop):
+                return self.strTimeProp(start, end, '%Y-%m-%d', prop)
+
+    def get_random_image(self):
+            random_date = self.randomDate("1989-4-16", datetime.datetime.now().strftime("%Y-%m-%d"), random.random())
+            url_to_dilbert_page = "http://www.dilbert.com/%s/" % random_date
+            response = requests.get(url_to_dilbert_page)
+            first_half = response.text[response.text.find("data-image"):]
+            data_image = first_half[:first_half.find(" ")]
+            url_to_dilbert_page = re.findall(r'"([^"]*)"', data_image)[0]
+            return url_to_dilbert_page, random_date
+
+    def send_response(self, bot, update, args):
+        command = self.commands.get(args[0])
+        if command:
+            response = command
+        elif args[0] == "decide":
+            args.pop(0)
+            args = [n.strip() for n in " ".join(args).split("või")]
+            response = args[randint(0, len(args)-1)]
+            bot.sendMessage(chat_id=update.message.chat_id, text="hmmm...")
+        elif args[0] == "võtame":
+            with open("võtame.txt", "r") as f:
+                lines = f.readlines()
+                response = lines[randint(0, len(lines) - 1)]
+        elif args[0] == "installi":
+            with open("installi.txt", "r") as f:
+                lines = f.readlines()
+                response = "installi " + lines[randint(0, len(lines) - 1)]
+        elif args[0].lower() == "dilbert":
+            bot.sendChatAction(chat_id=update.message.chat_id, action=telegram.ChatAction.UPLOAD_PHOTO )
+            result = self.get_random_image()
+            bot.sendPhoto(chat_id=update.message.chat_id, photo=result[0])
+            response = "Dilbert comic on " + result[1]
+        elif args[0].lower() == "xkcd":
+            bot.sendChatAction(chat_id=update.message.chat_id, action=telegram.ChatAction.UPLOAD_PHOTO )
+            data = get_random_xkcd_image()
+            bot.sendMessage(chat_id=update.message.chat_id, text=data[0])
+            bot.sendPhoto(chat_id=update.message.chat_id, photo=data[1])
+            response = data[2]
+        elif args[0].lower() == "ernie":
+            bot.sendChatAction(chat_id=update.message.chat_id, action=telegram.ChatAction.UPLOAD_PHOTO )
+            data  = get_random_ernie_image()
+            bot.sendPhoto(chat_id=update.message.chat_id, photo=data[0])
+            bot.sendMessage(chat_id=update.message.chat_id, text="Ernie comic on "+data[1])
+        elif args[0].lower() == "hagar":
+            bot.sendChatAction(chat_id=update.message.chat_id, action=telegram.ChatAction.UPLOAD_PHOTO )
+            data  = get_random_hagar_image()
+            bot.sendPhoto(chat_id=update.message.chat_id, photo=data[0])
+            bot.sendMessage(chat_id=update.message.chat_id, text="Hagar comic on "+data[1])
+        elif  " ".join(args).lower() == "star wars":
+            bot.sendMessage(chat_id=update.message.chat_id, text="Star wars tuleb välja:")
+            delta = datetime.datetime(2017, 12, 15) - datetime.datetime.now()
+            bot.sendMessage(chat_id=update.message.chat_id, text=str(delta.days) + " päeva")
+            hours = 23 - datetime.datetime.now().hour
+            if hours != 0:
+                bot.sendMessage(chat_id=update.message.chat_id, text=str(hours) + " tunni")
+            minutes = 59 - datetime.datetime.now().minute
+            if minutes != 0:
+                bot.sendMessage(chat_id=update.message.chat_id, text=str(minutes) + " minuti")
+            seconds = str(59 - datetime.datetime.now().second) + " sekundi"
+            bot.sendMessage(chat_id=update.message.chat_id, text=str(seconds))
+            response = "pärast"
+        else:
+            with open(self.filename, "r") as f:
+                lines = f.readlines()
+            response = create_response(lines, args)
+            bot.sendMessage(chat_id=update.message.chat_id, text="1. " + " ".join(args))
+            bot.sendMessage(chat_id=update.message.chat_id, text="2. ...")
+        bot.sendMessage(chat_id=update.message.chat_id, text=response)
+
+commands = {'TüraKusMuBussOn' : "http://g3.nh.ee/images/pix/saue-buss-nr-190-laks-polema-65548306.jpg"}
+filename = "plan.txt"
+token='265390616:AAGquQAVoMm0WO7HsmEKPscLwbYNvd3fsdE'
+command = 'plan'
+
+PlanBot(token, filename, commands, command)
