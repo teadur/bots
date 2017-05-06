@@ -11,23 +11,23 @@ class PlanBot(bot):
             given format (strftime-style), giving an interval [start, end].
             prop specifies how a proportion of the interval to be taken after
             start.  The returned time will be in the specified format.
-            """
+        """
         stime = time.mktime(time.strptime(start, format))
         etime = time.mktime(time.strptime(end, format))
         ptime = stime + prop * (etime - stime)
         return time.strftime(format, time.localtime(ptime))
 
     def randomDate(self, start, end, prop):
-                return self.strTimeProp(start, end, '%Y-%m-%d', prop)
+        return self.strTimeProp(start, end, '%Y-%m-%d', prop)
 
     def get_random_image(self):
-            random_date = self.randomDate("1989-4-16", datetime.datetime.now().strftime("%Y-%m-%d"), random.random())
-            url_to_dilbert_page = "http://www.dilbert.com/%s/" % random_date
-            response = requests.get(url_to_dilbert_page)
-            first_half = response.text[response.text.find("data-image"):]
-            data_image = first_half[:first_half.find(" ")]
-            url_to_dilbert_page = re.findall(r'"([^"]*)"', data_image)[0]
-            return url_to_dilbert_page, random_date
+        random_date = self.randomDate("1989-4-16", datetime.datetime.now().strftime("%Y-%m-%d"), random.random())
+        url_to_dilbert_page = "http://www.dilbert.com/%s/" % random_date
+        response = requests.get(url_to_dilbert_page)
+        first_half = response.text[response.text.find("data-image"):]
+        data_image = first_half[:first_half.find(" ")]
+        url_to_dilbert_page = re.findall(r'"([^"]*)"', data_image)[0]
+        return url_to_dilbert_page, random_date
 
     def send_response(self, bot, update, args):
         command = self.commands.get(args[0])
