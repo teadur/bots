@@ -14,7 +14,7 @@ def get_xml():
     return xml
 
 def get_weather(place):
-    weather = ""
+    weather = temperature = ""
     returnvalue = None
     xml = get_xml()
 
@@ -28,6 +28,14 @@ def get_weather(place):
     "windspeed":" m/s",
     "windspeedmax":" m/s"
     }
+    comment = {
+    -30: "kampsuni ilm",
+    -20: "t-särgi ilm",
+    -10: "lühikeste pükste ilm",
+      0: "soe",
+     10: "palav bljat",
+     20: "kuradi palav bljät",
+     30: "põrgu"}
 
     for n in xml.xpath("//name"):
         n.text = n.text.lower()
@@ -38,9 +46,17 @@ def get_weather(place):
         for child in weather_subtree.xpath("./*[not(name()='name') and not(name()='wmocode') and text()!='']"):
             if child.tag == "phenomenon":
                 weather += child.text + "\n"
+            elif child.tag == "airtemperature":
+                temperature =  child.text + units[child.tag] + " "
+                for temp in comment:
+                    if float(child.text) < temp:
+                        temperature += comment[temp] + "\n"
+                        break
+                else:
+                    temperature += "surm" + "\n"
             else:
                 weather += child.tag + " " + child.text + units[child.tag] + "\n"
-        returnvalue = "Weather in " + place + ":\n" + weather
+        returnvalue = "Weather in " + place + ":\n" + temperature + weather
     except:
         returnvalue = None
     return returnvalue
