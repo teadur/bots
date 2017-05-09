@@ -78,6 +78,9 @@ class IlmBot(bot):
             response = get_weather("Tallinn")
         elif place == "Marilyni kodu":
             response = "lausmärt"
+        elif place == "tõde":
+            bot.send_photo(chat_id=update.message.chat_id, photo=open('ilm.jpg', 'rb'))
+            response = "TRUTH"
         else:
             response = get_weather(place)
         if not response:
