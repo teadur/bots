@@ -40,9 +40,8 @@ class GrammarBot(bot):
 	def add_callback(self, bot, update, args, chat_data, user_data):
 		bot.sendMessage(chat_id=update.message.chat_id, text="Sõnaraamatusse sina loll küll midagi lisada ei tohiks!")
 
-commands = {}
 filename = ""
 token='228030866:AAGFH13_njpLJA2qNhOQDAfaSGxo0y2Ggco'
 command = 'targuta'
 
-GrammarBot(token, filename, commands, command)
+GrammarBot(token, filename, command)

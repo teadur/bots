@@ -30,10 +30,7 @@ class PlanBot(bot):
         return url_to_dilbert_page, random_date
 
     def send_response(self, bot, update, args):
-        command = self.commands.get(args[0])
-        if command:
-            response = command
-        elif args[0] == "decide":
+        if args[0] == "decide":
             args.pop(0)
             args = [n.strip() for n in " ".join(args).split("või")]
             response = args[randint(0, len(args)-1)]
@@ -61,12 +58,12 @@ class PlanBot(bot):
             bot.sendChatAction(chat_id=update.message.chat_id, action=telegram.ChatAction.UPLOAD_PHOTO )
             data  = get_random_ernie_image()
             bot.sendPhoto(chat_id=update.message.chat_id, photo=data[0])
-            bot.sendMessage(chat_id=update.message.chat_id, text="Ernie comic on "+data[1])
+            response="Ernie comic on "+data[1]
         elif args[0].lower() == "hagar":
             bot.sendChatAction(chat_id=update.message.chat_id, action=telegram.ChatAction.UPLOAD_PHOTO )
             data  = get_random_hagar_image()
             bot.sendPhoto(chat_id=update.message.chat_id, photo=data[0])
-            bot.sendMessage(chat_id=update.message.chat_id, text="Hagar comic on "+data[1])
+            response="Hagar comic on "+data[1]
         elif  " ".join(args).lower() == "star wars":
             bot.sendMessage(chat_id=update.message.chat_id, text="Star wars tuleb välja:")
             delta = datetime.datetime(2017, 12, 15) - datetime.datetime.now()
@@ -80,6 +77,9 @@ class PlanBot(bot):
             seconds = str(59 - datetime.datetime.now().second) + " sekundi"
             bot.sendMessage(chat_id=update.message.chat_id, text=str(seconds))
             response = "pärast"
+        elif " ".join(args).lower() == "türa kus mu buss on":
+            bot.send_photo(chat_id=update.message.chat_id, photo=open('buss.jpg', 'rb'))
+            response = "Saue buss nr 190 läks põlema"
         else:
             with open(self.filename, "r") as f:
                 lines = f.readlines()
@@ -88,9 +88,8 @@ class PlanBot(bot):
             bot.sendMessage(chat_id=update.message.chat_id, text="2. ...")
         bot.sendMessage(chat_id=update.message.chat_id, text=response)
 
-commands = {'TüraKusMuBussOn' : "http://g3.nh.ee/images/pix/saue-buss-nr-190-laks-polema-65548306.jpg"}
 filename = "plan.txt"
 token='265390616:AAGquQAVoMm0WO7HsmEKPscLwbYNvd3fsdE'
 command = 'plan'
 
-PlanBot(token, filename, commands, command)
+PlanBot(token, filename, command)

@@ -4,8 +4,7 @@ from telegram.ext import Updater
 from telegram.ext import CommandHandler
 
 class bot(object):
-    def __init__(self, token, filename, commands, command):
-        self.commands = commands
+    def __init__(self, token, filename, command):
         self.filename = filename
 
         self.updater = Updater(token=token)
@@ -34,8 +33,6 @@ class bot(object):
             bot.sendMessage(chat_id=update.message.chat_id, text="Õpi kirjutama, loll. Tühja asja ma ei söö.")
 
     def response(self, bot, update, args, chat_data, user_data):
-        #with open ("insultide_logi.txt", "a") as f:
-            #f.write(" ".join(args) + "\n")
         self.send_response(bot, update, args)
         chatname = update.message.chat.title
         chatid = update.message.chat_id
@@ -45,14 +42,9 @@ class bot(object):
         bot.sendMessage(chat_id="164813180", text=new_username + "@" + chatname  + " " + str(chatid) + " " + " ".join(args))
 
     def send_response(self, bot, update, args):
-        command = self.commands.get(args[0])
-        if command:
-            response = command
-        else:
-            with open(self.filename, "r") as f:
-                lines = f.readlines()
-            response = create_response(lines, args)
-        print (response)
+        with open(self.filename, "r") as f:
+            lines = f.readlines()
+        response = create_response(lines, args)
         bot.sendMessage(chat_id=update.message.chat_id, text=response)
 
 def create_response(lines, args):

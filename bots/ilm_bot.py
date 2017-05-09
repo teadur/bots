@@ -15,7 +15,6 @@ def get_xml():
 
 def get_weather(place):
     weather = temperature = ""
-    returnvalue = None
     xml = get_xml()
 
     units = {
@@ -72,7 +71,6 @@ def get_placenames():
 
 class IlmBot(bot):
     def send_response(self, bot, update, args):
-        print ("send_response")
         place = " ".join(args)
         if place == "":
             response = get_weather("Tallinn")
@@ -88,4 +86,4 @@ class IlmBot(bot):
         bot.sendMessage(chat_id=update.message.chat_id, text=response)
 
 token = "348367169:AAG4xGta0G35xRPn8nDQYngld12x-rxrCE4"
-IlmBot(token, None, None,"ilm")
+IlmBot(token, None, "ilm")
