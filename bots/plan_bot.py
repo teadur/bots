@@ -51,6 +51,7 @@ class PlanBot(bot):
         elif args[0].lower() == "xkcd":
             bot.sendChatAction(chat_id=update.message.chat_id, action=telegram.ChatAction.UPLOAD_PHOTO )
             data = get_random_xkcd_image()
+            print (data)
             bot.sendMessage(chat_id=update.message.chat_id, text=data[0])
             bot.sendPhoto(chat_id=update.message.chat_id, photo=data[1])
             response = data[2]
@@ -80,6 +81,9 @@ class PlanBot(bot):
         elif " ".join(args).lower() == "türa kus mu buss on":
             bot.send_photo(chat_id=update.message.chat_id, photo=open('buss.jpg', 'rb'))
             response = "Saue buss nr 190 läks põlema"
+        elif " ".join(args).lower() == "flap slap":
+            bot.send_photo(chat_id=update.message.chat_id, photo=open('flapslap.jpg', 'rb'))
+            response = ":)"
         else:
             with open(self.filename, "r") as f:
                 lines = f.readlines()
