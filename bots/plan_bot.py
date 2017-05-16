@@ -47,7 +47,7 @@ class PlanBot(bot):
                 page = html.document_fromstring(requests.get("https://distrowatch.com/table.php?distribution={}".format(distro.lower())).text)
                 element = page.xpath("//td[@class='TablesTitle']/text()")
                 for i in element:
-                    if len(i)>20:
+                    if len(i)>30:
                         response += i
         elif args[0].lower() == "dilbert":
             bot.sendChatAction(chat_id=update.message.chat_id, action=telegram.ChatAction.UPLOAD_PHOTO )
