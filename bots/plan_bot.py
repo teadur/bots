@@ -48,7 +48,7 @@ class PlanBot(bot):
                 element = page.xpath("//td[@class='TablesTitle']/text()")
                 for i in element:
                     if len(i)>20:
-                        response += "\n" + i
+                        response += i
         elif args[0].lower() == "dilbert":
             bot.sendChatAction(chat_id=update.message.chat_id, action=telegram.ChatAction.UPLOAD_PHOTO )
             result = self.get_random_image()
