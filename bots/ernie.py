@@ -44,7 +44,7 @@ def get_random_hagar_image():
                 response = requests.get(url_to_dilbert_page)                
                 page = html.document_fromstring(response.text)
                 data_image = page.xpath("//form[@name='safr']/img")
-        return data_image[0].get("src")
+        return [data_image[0].get("src"), random_date]
 
 def get_random_ernie_image():
         data_image = []
@@ -54,12 +54,12 @@ def get_random_ernie_image():
                 response = requests.get(url_to_dilbert_page)                
                 page = html.document_fromstring(response.text)
                 data_image = page.xpath("//form[@name='safr']/img")
-        return data_image[0].get("src")
+        return [data_image[0].get("src"), random_date]
 
 def get_random_xkcd_image():
         image = []
         while image == []:
                 response = requests.get("http://c.xkcd.com/random/comic/")        
                 page = html.document_fromstring(response.text)
-                image = page.xpath("//div[@id='comic']/img")        
-        return "http:" + image[0].get("src")
+                image = page.xpath("//div[@id='comic']/img")
+        return [page.get_element_by_id("ctitle").text_content(), "http:" + image[0].get("src"), image[0].get("title")]

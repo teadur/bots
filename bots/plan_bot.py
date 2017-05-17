@@ -2,7 +2,7 @@ from bot_backend import *
 from ernie import get_random_xkcd_image
 from ernie import get_random_ernie_image
 from ernie import get_random_hagar_image
-import time, datetime, random, requests, urllib, telegram
+import time, datetime, random, requests, urllib, telegram, lxml.html as html
 
 class PlanBot(bot):
     def strTimeProp(self, start, end, format, prop):
@@ -42,7 +42,13 @@ class PlanBot(bot):
         elif args[0] == "installi":
             with open("installi.txt", "r") as f:
                 lines = f.readlines()
-                response = "installi " + lines[randint(0, len(lines) - 1)]
+                distro = lines[randint(0, len(lines) - 1)]
+                response = "installi " + distro
+                page = html.document_fromstring(requests.get("https://distrowatch.com/table.php?distribution={}".format(distro.lower())).text)
+                element = page.xpath("//td[@class='TablesTitle']/text()")
+                for i in element:
+                    if len(i)>35:
+                        response += i
         elif args[0].lower() == "dilbert":
             bot.sendChatAction(chat_id=update.message.chat_id, action=telegram.ChatAction.UPLOAD_PHOTO )
             result = self.get_random_image()
@@ -51,6 +57,7 @@ class PlanBot(bot):
         elif args[0].lower() == "xkcd":
             bot.sendChatAction(chat_id=update.message.chat_id, action=telegram.ChatAction.UPLOAD_PHOTO )
             data = get_random_xkcd_image()
+            print (data)
             bot.sendMessage(chat_id=update.message.chat_id, text=data[0])
             bot.sendPhoto(chat_id=update.message.chat_id, photo=data[1])
             response = data[2]
@@ -80,6 +87,9 @@ class PlanBot(bot):
         elif " ".join(args).lower() == "türa kus mu buss on":
             bot.send_photo(chat_id=update.message.chat_id, photo=open('buss.jpg', 'rb'))
             response = "Saue buss nr 190 läks põlema"
+        elif " ".join(args).lower() == "flap slap":
+            bot.send_photo(chat_id=update.message.chat_id, photo=open('flapslap.jpg', 'rb'))
+            response = ":)"
         else:
             with open(self.filename, "r") as f:
                 lines = f.readlines()
@@ -92,4 +102,4 @@ filename = "plan.txt"
 token='265390616:AAGquQAVoMm0WO7HsmEKPscLwbYNvd3fsdE'
 command = 'plan'
 
-PlanBot(token, filename, command)
+PlanBot(token, filename, command).send_response(None, None, ["installi"])
