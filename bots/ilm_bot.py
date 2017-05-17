@@ -33,7 +33,7 @@ def get_weather(place):
     -10: "lühikeste pükste ilm",
       0: "soe",
      10: "palav bljat",
-     20: "kuradi palav bljät",
+     20: "kuradi palav bljät, ajuvedelik keeb",
      30: "põrgu"}
 
     for n in xml.xpath("//name"):
