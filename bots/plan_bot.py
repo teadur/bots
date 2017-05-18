@@ -102,4 +102,4 @@ filename = "plan.txt"
 token='265390616:AAGquQAVoMm0WO7HsmEKPscLwbYNvd3fsdE'
 command = 'plan'
 
-PlanBot(token, filename, command).send_response(None, None, ["installi"])
+PlanBot(token, filename, command)
