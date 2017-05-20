@@ -71,9 +71,19 @@ class PlanBot(bot):
             data  = get_random_hagar_image()
             bot.sendPhoto(chat_id=update.message.chat_id, photo=data[0])
             response="Hagar comic on "+data[1]
-        elif  " ".join(args).lower() == "star wars":
-            bot.sendMessage(chat_id=update.message.chat_id, text="Star wars tuleb välja:")
-            delta = datetime.datetime(2017, 12, 15) - datetime.datetime.now()
+        elif  " ".join(args).lower() == "star wars" or " ".join(args).lower() == "fantastic beasts":
+            if " ".join(args).lower() == "star wars": 
+                name = "Star Wars"
+                year = 2017  
+                month = 12
+                day = 15
+            elif " ".join(args).lower() == "fantastic beasts":
+                name = "Fantastic Beasts 2"
+                year = 2018  
+                month = 11
+                day = 16
+            delta = datetime.datetime(year, month, day) - datetime.datetime.now()
+            bot.sendMessage(chat_id=update.message.chat_id, text=name + "tuleb välja:")
             bot.sendMessage(chat_id=update.message.chat_id, text=str(delta.days) + " päeva")
             hours = 23 - datetime.datetime.now().hour
             if hours != 0:
