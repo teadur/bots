@@ -83,7 +83,7 @@ class PlanBot(bot):
                 month = 11
                 day = 16
             delta = datetime.datetime(year, month, day) - datetime.datetime.now()
-            bot.sendMessage(chat_id=update.message.chat_id, text=name + "tuleb välja:")
+            bot.sendMessage(chat_id=update.message.chat_id, text=name + " tuleb välja:")
             bot.sendMessage(chat_id=update.message.chat_id, text=str(delta.days) + " päeva")
             hours = 23 - datetime.datetime.now().hour
             if hours != 0:
