@@ -1,6 +1,22 @@
 from bot_backend import bot
+from random import randint
+import json
 
 class InsultBot(bot):
+
+    def get_gif(self):
+        with open ("fuckyou.json", "r") as f:
+            lines = [line for line in f if line.strip()]
+        data = json.loads(" ".join(lines))
+        link = []
+        for insult in data["data"]:
+            mp4 = insult.get("mp4")
+            if not mp4:
+                link.append(insult.get("link"))
+            else:
+                link.append(mp4)
+        return link[randint(0, len(link) - 1)]
+
     def send_response(self, bot, update, args):
         if args[0] == "arvamus":
             bot.send_photo(chat_id=update.message.chat_id, photo=open('arvamus.jpg', 'rb'))
@@ -10,6 +26,9 @@ class InsultBot(bot):
             bot.send_document(chat_id=update.message.chat_id, document=open('arvamus_rick.mp4', 'rb'))
         elif args[0] == "hardbass":
             bot.sendMessage(chat_id=update.message.chat_id, text="Опа опа пидорас , рушит город мой Хард басс , пиво, семки и напас , весь район боится нас")
+        elif " ".join(args).lower() == "fuck you":
+            photo = self.get_gif()
+            bot.send_video(chat_id=update.message.chat_id, video=photo)
         else:
             super(InsultBot, self).send_response(bot,update,args)
 
