@@ -26,8 +26,12 @@ class InsultBot(bot):
             bot.send_document(chat_id=update.message.chat_id, document=open('arvamus_rick.mp4', 'rb'))
         elif args[0] == "hardbass":
             bot.sendMessage(chat_id=update.message.chat_id, text="Опа опа пидорас , рушит город мой Хард басс , пиво, семки и напас , весь район боится нас")
-        elif " ".join(args).lower() == "fuck you":
+        elif " ".join(args[:2]).lower() == "fuck you":
             photo = self.get_gif()
+            target = " ".join(args[2:])
+            if target:
+                target = "Hey " + target
+                bot.sendMessage(chat_id=update.message.chat_id, text=target)
             bot.send_video(chat_id=update.message.chat_id, video=photo)
         else:
             super(InsultBot, self).send_response(bot,update,args)
