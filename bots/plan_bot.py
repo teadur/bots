@@ -100,6 +100,8 @@ class PlanBot(bot):
         elif " ".join(args).lower() == "flap slap":
             bot.send_photo(chat_id=update.message.chat_id, photo=open('flapslap.jpg', 'rb'))
             response = ":)"
+        elif " ".join(args).lower() == "nope":
+            bot.send_document(chat_id=update.message.chat_id, document=open('nope_spongebob.mp4', 'rb'))
         else:
             with open(self.filename, "r") as f:
                 lines = f.readlines()
