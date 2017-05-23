@@ -71,7 +71,7 @@ class PlanBot(bot):
             data  = get_random_hagar_image()
             bot.sendPhoto(chat_id=update.message.chat_id, photo=data[0])
             response="Hagar comic on "+data[1]
-        elif  " ".join(args).lower() == "star wars" or " ".join(args).lower() == "fantastic beasts":
+        elif  " ".join(args).lower() == "star wars" or " ".join(args).lower() == "fantastic beasts" or " ".join(args).lower() == "rammstein":
             if " ".join(args).lower() == "star wars": 
                 name = "Star Wars"
                 year = 2017  
@@ -82,6 +82,11 @@ class PlanBot(bot):
                 year = 2018  
                 month = 11
                 day = 16
+            elif " ".join(args).lower() == "rammstein":
+                name = "Rammstein"
+                year = 2017
+                month = 6
+                day = 11
             delta = datetime.datetime(year, month, day) - datetime.datetime.now()
             bot.sendMessage(chat_id=update.message.chat_id, text=name + " tuleb välja:")
             bot.sendMessage(chat_id=update.message.chat_id, text=str(delta.days) + " päeva")
@@ -113,5 +118,4 @@ class PlanBot(bot):
 filename = "plan.txt"
 token='265390616:AAGquQAVoMm0WO7HsmEKPscLwbYNvd3fsdE'
 command = 'plan'
-
 PlanBot(token, filename, command)
