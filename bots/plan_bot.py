@@ -108,7 +108,7 @@ class PlanBot(bot):
         elif " ".join(args).lower() == "calmyotits":
             bot.send_document(chat_id=update.message.chat_id, document=open('bill.mp4', 'rb'))
         elif " ".join(args).lower() == "clamyotits":
-            bot.send_document(chat_id=update.message.chat_id, document=open('clamyot', 'rb'))
+            bot.send_document(chat_id=update.message.chat_id, document=open('clamyot.mp4', 'rb'))
         elif " ".join(args).lower() == "nope":
             bot.send_document(chat_id=update.message.chat_id, document=open('nope_spongebob.mp4', 'rb'))
         else:
