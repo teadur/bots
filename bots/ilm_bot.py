@@ -27,7 +27,8 @@ def get_weather(place):
     "windspeed":" m/s",
     "windspeedmax":" m/s"
     }
-    comment = {
+
+    temp_comment = {
     -30: "kampsuni ilm",
     -20: "t-särgi ilm",
     -10: "lühikeste pükste ilm",
@@ -35,6 +36,17 @@ def get_weather(place):
      10: "palav bljat",
      20: "kuradi palav bljät, ajuvedelik keeb",
      30: "põrgu"}
+
+    wind_comment = {
+    3:"kerged tupetuuled",
+    6:"oh sa lits, kus puhub",
+    9:"assa tuss, mis tuisk",
+    12:"rape wind",
+    15:"suema queef"}
+
+    comment2tag = {
+    "airtemperature":[temp_comment,"surm"],
+    "windspeed":[wind_comment,"pardi peer"]}
 
     for n in xml.xpath("//name"):
         n.text = n.text.lower()
@@ -45,14 +57,14 @@ def get_weather(place):
         for child in weather_subtree.xpath("./*[not(name()='name') and not(name()='wmocode') and text()!='']"):
             if child.tag == "phenomenon":
                 weather += child.text + "\n"
-            elif child.tag == "airtemperature":
-                temperature =  child.text + units[child.tag] + " "
-                for temp in comment:
-                    if float(child.text) < temp:
-                        temperature += comment[temp] + "\n"
+            elif child.tag in comment2tag:
+                measurement =  child.text + units[child.tag] + " "
+                for limit in comment2tag[child.tag][0]:
+                    if float(child.text) < limit:
+                        measurement += comment2tag[child.tag][0][limit] + "\n"
                         break
                 else:
-                    temperature += "surm" + "\n"
+                    measurement += comment2tag[child.tag][1] + "\n"
             else:
                 weather += child.tag + " " + child.text + units[child.tag] + "\n"
         returnvalue = "Weather in " + place + ":\n" + temperature + weather
