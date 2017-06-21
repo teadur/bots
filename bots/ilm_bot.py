@@ -14,7 +14,7 @@ def get_xml():
     return xml
 
 def get_weather(place):
-    weather = temperature = ""
+    weather = measurement = ""
     xml = get_xml()
 
     units = {
@@ -67,7 +67,7 @@ def get_weather(place):
                     measurement += comment2tag[child.tag][1] + "\n"
             else:
                 weather += child.tag + " " + child.text + units[child.tag] + "\n"
-        returnvalue = "Weather in " + place + ":\n" + temperature + weather
+        returnvalue = "Weather in " + place + ":\n" + measurement + weather
     except:
         returnvalue = None
     return returnvalue
