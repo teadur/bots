@@ -58,7 +58,7 @@ def get_weather(place):
             if child.tag == "phenomenon":
                 weather += child.text + "\n"
             elif child.tag in comment2tag:
-                measurement =  child.text + units[child.tag] + " "
+                measurement +=  child.text + units[child.tag] + " "
                 for limit in comment2tag[child.tag][0]:
                     if float(child.text) < limit:
                         measurement += comment2tag[child.tag][0][limit] + "\n"
