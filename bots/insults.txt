@@ -1142,3 +1142,5 @@ Kaks põske õlgade vahel ei ole veel nägu!
 See, mis sul on, ei ole minu jaoks midagi enamat kui 10 sendine peeretus.
 suitsetad paki päevas aga kaine peaga ei tee
 $1, aja oma litsiriba maha
+$1, if you were drowning I'd throw you a fucking barbell
+$1, käi vittu.
