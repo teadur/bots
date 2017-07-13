@@ -33,7 +33,7 @@ class GrammarBot(bot):
 			print (e)
 
 		if len(response) > 4096:
-			bot.sendMessage(chat_id=update.message.chat_id, text="See küsimus on nii loll et vastus ei mahu sõnumisse ära.")
+			bot.sendMessage(chat_id=update.message.chat_id, text=response[:4090]+"...")
 			return
 		bot.sendMessage(chat_id=update.message.chat_id, text=response)
 		
