@@ -1144,3 +1144,5 @@ suitsetad paki päevas aga kaine peaga ei tee
 $1, aja oma litsiriba maha
 $1, if you were drowning I'd throw you a fucking barbell
 $1, käi vittu.
+$1 on selline inimene, kes vaimustub muuseumis purki sittumisest.
+$1, sa oled ikka täielik Siiri Talvistu
