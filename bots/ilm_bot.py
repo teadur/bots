@@ -25,7 +25,8 @@ def get_weather(place):
     "airtemperature":"°C",
     "winddirection":"°",
     "windspeed":" m/s",
-    "windspeedmax":" m/s"
+    "windspeedmax":" m/s",
+    "watertemperature":"°C"
     }
 
     temp_comment = {
@@ -54,7 +55,8 @@ def get_weather(place):
         weather_subtree = xml.xpath("//station[name[text()[contains(.,'" + place.lower() + "')]]]")[0]
 
         #print ET.tostring(weather_subtree, pretty_print = True)
-        for child in weather_subtree.xpath("./*[not(name()='name') and not(name()='wmocode') and text()!='']"):
+    
+        for child in weather_subtree.xpath("./*[not(name()='name') and not(name()='wmocode') and not(name()='longitude') and not(name()='latitude') and not(name()='waterlevel') and text()!='']"):
             if child.tag == "phenomenon":
                 weather += child.text + "\n"
             elif child.tag in comment2tag:
