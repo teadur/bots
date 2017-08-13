@@ -3,7 +3,14 @@ import lxml.etree as ET
 import urllib.request
 
 def get_xml():
-    with urllib.request.urlopen('http://www.ilmateenistus.ee/ilma_andmed/xml/observations.php') as response:
+    req = urllib.request.Request(
+    'http://www.ilmateenistus.ee/ilma_andmed/xml/observations.php',
+    data=None,
+    headers={
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.47 Safari/537.36'
+    }
+    )
+    with urllib.request.urlopen(req) as response:
         string = response.read()
     xml = None
     parser = ET.XMLParser(remove_blank_text=True)
@@ -100,5 +107,6 @@ class IlmBot(bot):
             response = "Not found, try one of the following: \n" + get_placenames()
         bot.sendMessage(chat_id=update.message.chat_id, text=response)
 
-token = "348367169:AAG4xGta0G35xRPn8nDQYngld12x-rxrCE4"
-IlmBot(token, None, "ilm")
+#token = "348367169:AAG4xGta0G35xRPn8nDQYngld12x-rxrCE4"
+#IlmBot(token, None, "ilm")
+print (get_weather("tallinn"))
