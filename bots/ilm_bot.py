@@ -107,6 +107,5 @@ class IlmBot(bot):
             response = "Not found, try one of the following: \n" + get_placenames()
         bot.sendMessage(chat_id=update.message.chat_id, text=response)
 
-#token = "348367169:AAG4xGta0G35xRPn8nDQYngld12x-rxrCE4"
-#IlmBot(token, None, "ilm")
-print (get_weather("tallinn"))
+token = "348367169:AAG4xGta0G35xRPn8nDQYngld12x-rxrCE4"
+IlmBot(token, None, "ilm")
