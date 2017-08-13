@@ -26,7 +26,8 @@ def get_weather(place):
     "winddirection":"°",
     "windspeed":" m/s",
     "windspeedmax":" m/s",
-    "watertemperature":"°C"
+    "watertemperature":"°C",
+    "waterlevel":"cm"
     }
 
     temp_comment = {
