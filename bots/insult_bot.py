@@ -33,6 +33,8 @@ class InsultBot(bot):
                 target = "Hey " + target
                 bot.sendMessage(chat_id=update.message.chat_id, text=target)
             bot.send_video(chat_id=update.message.chat_id, video=photo)
+        elif " ".join(args[:2]).lower() == "fidget spinner":
+            bot.send_document(chat_id=update.message.chat_id, document=open('fidget_spinner.mp4', 'rb'))
         else:
             super(InsultBot, self).send_response(bot,update,args)
 
