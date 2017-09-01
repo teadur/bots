@@ -26,6 +26,67 @@ class InsultBot(bot):
             bot.send_document(chat_id=update.message.chat_id, document=open('arvamus_rick.mp4', 'rb'))
         elif args[0] == "hardbass":
             bot.sendMessage(chat_id=update.message.chat_id, text="Опа опа пидорас , рушит город мой Хард басс , пиво, семки и напас , весь район боится нас")
+        elif args[0] == "pegi":
+            bot.sendMessage(chat_id=update.message.chat_id, text=
+"""
+On Sanity
+
+One lovely sunday afternoon
+some quy shot up a greasy spoon
+They found by looking trough his room
+that he made custom maps for doom
+A spokesman for the NRA
+said that things just cant go on this way
+Lets ban all the violent games
+and then go back to being sane
+
+Tuesday lunch was also mard
+when at a showing of Die Hard
+someone looking pale and scarred
+employed an ArmaLite AR
+The man who owned the weaponshop
+said that this has got to stop
+Lets ban films and violent games
+and then go back to being sane
+
+A musician was shot in the eye
+by a youth just passing by
+who sat down with a heavy sigh
+and read The Catcher in the Rye
+The gunseller stood at his pulpit
+soon identified the culprit
+Lets ban books and films and violent games
+then all go back to being sane
+
+A man who'd been gone for a while
+was found shot execution style
+His body wore a frozen smile
+and clutched a picture of his child
+They said: "Thank god he was disarmed,
+before that picture did more harm!
+Lets ban pictures, books, films and games,
+then go back to being sane."
+
+A child who stole an iron brew
+suspected that his parents knew
+shot them with a 22
+because a friend advised him to
+The gunspokesman said: "Its absurd
+we tolerate the spoken word!
+Lets ban talking pictures books and films and games
+then all go back to being sane."
+
+But with the spokesmans work complete
+we couldnt ask for food to eat
+we dragged him out into the street
+to be shot and butchered for his meat
+He cried: "But I kept you sane!
+I banned the things that were to blame!"
+But we'd all forgotten spoken language
+so he went unheard into a sandwich
+
+Yahtzee
+""")
         elif " ".join(args[:2]).lower() == "fuck you":
             photo = self.get_gif()
             target = " ".join(args[2:])
