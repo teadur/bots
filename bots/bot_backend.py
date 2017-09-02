@@ -21,7 +21,7 @@ class bot(object):
     def echo(self, bot, update):
         chatname = update.message.chat.title
         chatid = update.message.chat_id
-        if(chatid != -1001071499716):
+        if(chatid != -1001071499716 and chatid != -222974765 and chatid != -158709130):
             new_update = ast.literal_eval(str(update).replace("from", "form"))
             new_username = new_update["message"]["form"]["username"]
             bot.send_message(chat_id="164813180", text=new_username + "@" + chatname  + " " + str(chatid) + " " + update.message.text)
