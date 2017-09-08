@@ -1,10 +1,10 @@
-from bot_backend import *
+from telegram_backend import *
 from ernie import get_random_xkcd_image
 from ernie import get_random_ernie_image
 from ernie import get_random_hagar_image
-import time, datetime, random, requests, urllib, telegram, lxml.html as html
+import time, datetime, random, requests, urllib, telegram_backend, lxml.html as html
 
-class PlanBot(bot):
+class PlanBot(telegram_bot):
     def strTimeProp(self, start, end, format, prop):
         """Get a time at a proportion of a range of two formatted times.
             start and end should be strings specifying times formated in the
@@ -50,24 +50,24 @@ class PlanBot(bot):
                     if len(i)>35:
                         response += i
         elif args[0].lower() == "dilbert":
-            bot.sendChatAction(chat_id=update.message.chat_id, action=telegram.ChatAction.UPLOAD_PHOTO )
+            bot.sendChatAction(chat_id=update.message.chat_id, action=telegram_backend.ChatAction.UPLOAD_PHOTO)
             result = self.get_random_image()
             bot.sendPhoto(chat_id=update.message.chat_id, photo=result[0])
             response = "Dilbert comic on " + result[1]
         elif args[0].lower() == "xkcd":
-            bot.sendChatAction(chat_id=update.message.chat_id, action=telegram.ChatAction.UPLOAD_PHOTO )
+            bot.sendChatAction(chat_id=update.message.chat_id, action=telegram_backend.ChatAction.UPLOAD_PHOTO)
             data = get_random_xkcd_image()
             print (data)
             bot.sendMessage(chat_id=update.message.chat_id, text=data[0])
             bot.sendPhoto(chat_id=update.message.chat_id, photo=data[1])
             response = data[2]
         elif args[0].lower() == "ernie":
-            bot.sendChatAction(chat_id=update.message.chat_id, action=telegram.ChatAction.UPLOAD_PHOTO )
+            bot.sendChatAction(chat_id=update.message.chat_id, action=telegram_backend.ChatAction.UPLOAD_PHOTO)
             data  = get_random_ernie_image()
             bot.sendPhoto(chat_id=update.message.chat_id, photo=data[0])
             response="Ernie comic on "+data[1]
         elif args[0].lower() == "hagar":
-            bot.sendChatAction(chat_id=update.message.chat_id, action=telegram.ChatAction.UPLOAD_PHOTO )
+            bot.sendChatAction(chat_id=update.message.chat_id, action=telegram_backend.ChatAction.UPLOAD_PHOTO)
             data  = get_random_hagar_image()
             bot.sendPhoto(chat_id=update.message.chat_id, photo=data[0])
             response="Hagar comic on "+data[1]

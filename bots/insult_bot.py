@@ -1,8 +1,10 @@
-from bot_backend import bot
+from telegram_backend import telegram_bot
+from discord_backend import discord_bot
+from common import common_bot
 from random import randint
 import json
 
-class InsultBot(bot):
+class InsultBot(common_bot):
 
     def get_gif(self):
         with open ("fuckyou.json", "r") as f:
@@ -17,17 +19,17 @@ class InsultBot(bot):
                 link.append(mp4)
         return link[randint(0, len(link) - 1)]
 
-    def send_response(self, bot, update, args):
+    def create_response(self, args):
         if args[0] == "arvamus":
-            bot.send_photo(chat_id=update.message.chat_id, photo=open('arvamus.jpg', 'rb'))
+            return open('arvamus.jpg', 'rb')
         elif args[0] == "ultimate":
-            bot.sendMessage(chat_id=update.message.chat_id, text="You... dirty... stuck-up... sadistic... shit-eating, cocksucking, buttfucking, penis-smelling, crotch-grabbing, ball-licking, semen-drinking, dog-raping, Nazi-loving, child-touching, cow-humping, perverted, spineless, heartless, mindless, dickless, testicle-choking, urine-gargling, jerk-offing, horse face, sheep-fondling, toilet-kissing, self-centered, feces-puking, dildo-shoving, snot-spitting, crap-gathering, big-nosed, monkey-slapping, bastard-screwing, bean-shitting, fart-knocking, sack-busting, splooge-tasting, bear-blowing, head-swallowing, bitch-snatching, handjobbing, donkey-caressing, mucus-spewing, anal-plugging, ho-grabbing, uncircumsized, sewer-sipping, whore mongering, piss-swimming, midget-munching, douchebag, ho-biting, carnivorous, mail-order prostituting asshole!")
+            return "You... dirty... stuck-up... sadistic... shit-eating, cocksucking, buttfucking, penis-smelling, crotch-grabbing, ball-licking, semen-drinking, dog-raping, Nazi-loving, child-touching, cow-humping, perverted, spineless, heartless, mindless, dickless, testicle-choking, urine-gargling, jerk-offing, horse face, sheep-fondling, toilet-kissing, self-centered, feces-puking, dildo-shoving, snot-spitting, crap-gathering, big-nosed, monkey-slapping, bastard-screwing, bean-shitting, fart-knocking, sack-busting, splooge-tasting, bear-blowing, head-swallowing, bitch-snatching, handjobbing, donkey-caressing, mucus-spewing, anal-plugging, ho-grabbing, uncircumsized, sewer-sipping, whore mongering, piss-swimming, midget-munching, douchebag, ho-biting, carnivorous, mail-order prostituting asshole!"
         elif args[0] == "rick":
-            bot.send_document(chat_id=update.message.chat_id, document=open('arvamus_rick.mp4', 'rb'))
+            return open('arvamus_rick.mp4', 'rb')
         elif args[0] == "hardbass":
-            bot.sendMessage(chat_id=update.message.chat_id, text="Опа опа пидорас , рушит город мой Хард басс , пиво, семки и напас , весь район боится нас")
+            return "Опа опа пидорас , рушит город мой Хард басс , пиво, семки и напас , весь район боится нас"
         elif args[0] == "pegi":
-            bot.sendMessage(chat_id=update.message.chat_id, text=
+            return (
 """
 On Sanity
 
@@ -92,15 +94,21 @@ Yahtzee
             target = " ".join(args[2:])
             if target:
                 target = "Hey " + target
-                bot.sendMessage(chat_id=update.message.chat_id, text=target)
-            bot.send_video(chat_id=update.message.chat_id, video=photo)
+            return (target + "\n" + photo)
         elif " ".join(args[:2]).lower() == "fidget spinner":
-            bot.send_document(chat_id=update.message.chat_id, document=open('fidget_spinner.mp4', 'rb'))
+            return open('fidget_spinner.mp4', 'rb')
         else:
-            super(InsultBot, self).send_response(bot,update,args)
+            return super(InsultBot, self).create_response(args)
 
-filename = "insults.txt"
-token='297812849:AAFGeKrSX3lyWv3m5XGiu3pr9G6wuLae1E8'
-command = 'insult'
+class TelegramInsultBot(InsultBot, telegram_bot):
+    def __init__(self):
+        InsultBot.__init__(self, "insults.txt")
+        telegram_bot.__init__(self, '297812849:AAFGeKrSX3lyWv3m5XGiu3pr9G6wuLae1E8', 'insult')
 
-InsultBot(token, filename, command)
+class DiscordInsultBot(InsultBot, discord_bot):
+    def __init__(self):
+        InsultBot.__init__(self, "insults.txt")
+        discord_bot.__init__(self, 'MzU1Mzg2MjMyNjA5NDM5NzU2.DJMDKQ.AFHnEsjsQaLgKT61bBtBKdY1fag', 'insult')
+
+#TelegramInsultBot()
+DiscordInsultBot()

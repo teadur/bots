@@ -1,4 +1,5 @@
-from bot_backend import bot
+from telegram_backend import telegram_bot
+from discord_backend import discord_bot
 import lxml.etree as ET
 import urllib.request
 
@@ -91,21 +92,27 @@ def get_placenames():
 
     return " ".join(placenames)
 
-class IlmBot(bot):
-    def send_response(self, bot, update, args):
+class IlmBot(object):
+    def create_response(self, args):
         place = " ".join(args)
         if place == "":
             response = get_weather("Tallinn")
         elif place == "Marilyni kodu":
             response = "lausmärt"
         elif place == "tõde":
-            bot.send_photo(chat_id=update.message.chat_id, photo=open('ilm.jpg', 'rb'))
-            response = "TRUTH"
+            response = open('ilm.jpg', 'rb')
         else:
             response = get_weather(place)
         if not response:
             response = "Not found, try one of the following: \n" + get_placenames()
-        bot.sendMessage(chat_id=update.message.chat_id, text=response)
+        return response
 
-token = "348367169:AAG4xGta0G35xRPn8nDQYngld12x-rxrCE4"
-IlmBot(token, None, "ilm")
+class TelegramIlmBot(telegram_bot, IlmBot):
+    def __init__(self):
+        telegram_bot.__init__(self, "348367169:AAG4xGta0G35xRPn8nDQYngld12x-rxrCE4", "ilm")
+
+class DiscordIlmBot(discord_bot, IlmBot):
+    def __init__(self):
+        discord_bot.__init__(self, "MzU1NTgwMDk1NTQ2NTIzNjQ5.DJO3-A.TKkY-GNO3kUTenjmnMfs6g-Dcsc", "ilm")
+
+DiscordIlmBot()
