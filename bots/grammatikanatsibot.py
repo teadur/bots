@@ -9,9 +9,9 @@ from oxford_dictionary import query_oxford_english
 class GrammarBot(object):
 	def create_response(self, args):
 		if len(args) > 1:
-			return "Lollakas! Tegu on sõnaraamatuga mitte sõnaderaamatuga!"
+			return [("string", "Lollakas! Tegu on sõnaraamatuga mitte sõnaderaamatuga!")]
 		elif not args:
-			return "Nii loll et ei oska isegi sõnaraamatult küsida jah!"
+			return [("string", "Nii loll et ei oska isegi sõnaraamatult küsida jah!")]
 		try:
 
 			response = query_oxford_english(args[0])
