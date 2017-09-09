@@ -6,7 +6,7 @@ from ernie import get_random_ernie_image
 from ernie import get_random_hagar_image
 import time, datetime, random, requests, lxml.html as html
 from random import randint
-import re
+import re, sys
 
 class PlanBot(common_bot):
     def strTimeProp(self, start, end, format, prop):
@@ -122,4 +122,8 @@ class DiscordPlantBot(PlanBot, discord_bot):
         PlanBot.__init__(self, "plan.txt")
         discord_bot.__init__(self, 'MzU1NTg0ODYzOTk2MjE1Mjk2.DJO7uQ.bEL995vgQzPbXjS3LmwHsYpOMfY', 'plan', add_command=True)
 
-DiscordPlantBot()
+
+if sys.argv[1] == "telegram":
+    TelegramPlanBot()
+elif sys.argv[1] == "discord":
+    DiscordPlantBot()

@@ -1,7 +1,7 @@
 from telegram_backend import telegram_bot
 from discord_backend import discord_bot
 import lxml.etree as ET
-import urllib.request
+import urllib.request, sys
 
 def get_xml():
     req = urllib.request.Request(
@@ -116,4 +116,7 @@ class DiscordIlmBot(discord_bot, IlmBot):
     def __init__(self):
         discord_bot.__init__(self, "MzU1NTgwMDk1NTQ2NTIzNjQ5.DJO3-A.TKkY-GNO3kUTenjmnMfs6g-Dcsc", "ilm")
 
-DiscordIlmBot()
+if sys.argv[1] == "telegram":
+    TelegramIlmBot()
+elif sys.argv[1] == "discord":
+    DiscordIlmBot()

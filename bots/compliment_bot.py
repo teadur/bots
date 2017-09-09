@@ -1,6 +1,7 @@
 from telegram_backend import telegram_bot
 from discord_backend import discord_bot
 from common import common_bot
+import sys
 
 class ComplimentBot(common_bot):
     def create_response(self, args):
@@ -25,4 +26,8 @@ class DiscordComplimenttBot(ComplimentBot, discord_bot):
         ComplimentBot.__init__(self, "compliment.txt")
         discord_bot.__init__(self, 'MzU1NDU5OTk1NzE5OTU4NTI4.DJNHbg.NeNstLhB9Vo_erH1gnoCEnBdIFk', 'compliment', add_command=True)
 
-DiscordComplimenttBot()
+
+if sys.argv[1] == "telegram":
+    TelegramComplimentBot()
+elif sys.argv[1] == "discord":
+    DiscordComplimenttBot()

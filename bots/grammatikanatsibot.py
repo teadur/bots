@@ -1,4 +1,4 @@
-import lxml.html
+import lxml.html, sys
 import json
 import urllib.request
 import urllib.parse
@@ -20,7 +20,7 @@ class GrammarBot(object):
 				html = request.read()
 				data = json.loads(html.decode('utf-8'))
 				if not data['result']:
-					return "Ise mõtlesid selle sõna välja või. Lollakas!"
+					return [("string", "Ise mõtlesid selle sõna välja või. Lollakas!")]
 				else:
 					document = lxml.html.document_fromstring(data['result'])
 					response = document.text_content()
@@ -40,4 +40,8 @@ class DiscordGrammarBot(discord_bot, GrammarBot):
 	def __init__(self):
 		discord_bot.__init__(self, "MzU1NTgzMzYwMzI1NjQ4Mzk0.DJO6Uw.YP_WH7Oo76QWJc9Y2ZNMIeV53Ys", "targuta")
 
-DiscordGrammarBot()
+
+if sys.argv[1] == "telegram":
+	TelegramGrammarBot()
+elif sys.argv[1] == "discord":
+	DiscordGrammarBot()

@@ -2,7 +2,7 @@ from telegram_backend import telegram_bot
 from discord_backend import discord_bot
 from common import common_bot
 from random import randint
-import json
+import json, sys
 
 class InsultBot(common_bot):
 
@@ -109,5 +109,7 @@ class DiscordInsultBot(InsultBot, discord_bot):
         InsultBot.__init__(self, "insults.txt")
         discord_bot.__init__(self, 'MzU1Mzg2MjMyNjA5NDM5NzU2.DJMDKQ.AFHnEsjsQaLgKT61bBtBKdY1fag', 'insult', add_command=True)
 
-TelegramInsultBot()
-#DiscordInsultBot()
+if sys.argv[1] == "telegram":
+    TelegramInsultBot()
+elif sys.argv[1] == "discord":
+    DiscordInsultBot()
