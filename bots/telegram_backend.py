@@ -36,5 +36,7 @@ class telegram_bot(object):
         bot.sendMessage(chat_id="164813180", text=new_username + "@" + chatname  + " " + str(chatid) + " " + " ".join(args))
 
     def send_response(self, bot, update, args):
-        bot.sendMessage(chat_id=update.message.chat_id, text=self.create_response(args))
+        response = self.create_response(args)
+        for resp in response:
+            bot.sendMessage(chat_id=update.message.chat_id, text=resp)
 

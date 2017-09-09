@@ -20,16 +20,17 @@ class InsultBot(common_bot):
         return links[randint(0, len(links) - 1)]
 
     def create_response(self, args):
+        response = []
         if args[0] == "arvamus":
-            return 'arvamus.jpg'
+            response.append('arvamus.jpg')
         elif args[0] == "ultimate":
-            return "You... dirty... stuck-up... sadistic... shit-eating, cocksucking, buttfucking, penis-smelling, crotch-grabbing, ball-licking, semen-drinking, dog-raping, Nazi-loving, child-touching, cow-humping, perverted, spineless, heartless, mindless, dickless, testicle-choking, urine-gargling, jerk-offing, horse face, sheep-fondling, toilet-kissing, self-centered, feces-puking, dildo-shoving, snot-spitting, crap-gathering, big-nosed, monkey-slapping, bastard-screwing, bean-shitting, fart-knocking, sack-busting, splooge-tasting, bear-blowing, head-swallowing, bitch-snatching, handjobbing, donkey-caressing, mucus-spewing, anal-plugging, ho-grabbing, uncircumsized, sewer-sipping, whore mongering, piss-swimming, midget-munching, douchebag, ho-biting, carnivorous, mail-order prostituting asshole!"
+            response.append("You... dirty... stuck-up... sadistic... shit-eating, cocksucking, buttfucking, penis-smelling, crotch-grabbing, ball-licking, semen-drinking, dog-raping, Nazi-loving, child-touching, cow-humping, perverted, spineless, heartless, mindless, dickless, testicle-choking, urine-gargling, jerk-offing, horse face, sheep-fondling, toilet-kissing, self-centered, feces-puking, dildo-shoving, snot-spitting, crap-gathering, big-nosed, monkey-slapping, bastard-screwing, bean-shitting, fart-knocking, sack-busting, splooge-tasting, bear-blowing, head-swallowing, bitch-snatching, handjobbing, donkey-caressing, mucus-spewing, anal-plugging, ho-grabbing, uncircumsized, sewer-sipping, whore mongering, piss-swimming, midget-munching, douchebag, ho-biting, carnivorous, mail-order prostituting asshole!")
         elif args[0] == "rick":
-            return 'arvamus_rick.mp4'
+            response.append('arvamus_rick.mp4')
         elif args[0] == "hardbass":
-            return "Опа опа пидорас , рушит город мой Хард басс , пиво, семки и напас , весь район боится нас"
+            response.append("Опа опа пидорас , рушит город мой Хард басс , пиво, семки и напас , весь район боится нас")
         elif args[0] == "pegi":
-            return (
+            response.append (
 """
 On Sanity
 
@@ -91,14 +92,12 @@ Yahtzee
 """)
         elif " ".join(args[:2]).lower() == "fuck you":
             photo = self.get_gif()
-            target = " ".join(args[2:])
-            if target:
-                target = "Hey " + target
-            return (target + "\n" + photo)
+            response.append(photo)
         elif " ".join(args[:2]).lower() == "fidget spinner":
-            return 'fidget_spinner.mp4'
+            response.append('fidget_spinner.mp4')
         else:
-            return super(InsultBot, self).create_response(args)
+            response.append(super(InsultBot, self).create_response(args))
+        return response
 
 class TelegramInsultBot(InsultBot, telegram_bot):
     def __init__(self):

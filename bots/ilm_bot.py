@@ -105,7 +105,7 @@ class IlmBot(object):
             response = get_weather(place)
         if not response:
             response = "Not found, try one of the following: \n" + get_placenames()
-        return response
+        return [response]
 
 class TelegramIlmBot(telegram_bot, IlmBot):
     def __init__(self):

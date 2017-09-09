@@ -19,7 +19,9 @@ class discord_bot(object):
         if message.content.startswith(self.command):
             args = message.content
             args = args.replace(self.command, "").strip()
-            await self.client.send_message(message.channel, self.create_response([args]))
+            response = self.create_response([args])
+            for resp in response:
+                await self.client.send_message(message.channel, resp)
             #photo = discord.Embed()
             #photo.set_image(url="http://i.imgur.com/zl8Z8tY.mp4")
             #await self.client.send_message(message.channel, embed=photo)

@@ -30,7 +30,7 @@ class GrammarBot(object):
 
 		if len(response) > 4096:
 			return (response[:4090]+"...")
-		return response
+		return [response]
 
 class TelegramGrammarBot(telegram_bot, GrammarBot):
 	def __init__(self):

@@ -4,14 +4,16 @@ from common import common_bot
 
 class ComplimentBot(common_bot):
     def create_response(self, args):
+        response = []
         if args[0] == "skiimoovi":
-            return (
+            response.append (
             """
             Norra on nii ilus vää
             https://youtu.be/gD8Hs4xWVhQ
             """)
         else:
-            return super(ComplimentBot, self).create_response(args)
+            response.append(super(ComplimentBot, self).create_response(args))
+        return response
 
 class TelegramComplimentBot(ComplimentBot, telegram_bot):
     def __init__(self):

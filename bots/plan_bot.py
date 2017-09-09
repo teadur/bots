@@ -1,10 +1,14 @@
-from telegram_backend import *
+from telegram_backend import telegram_bot
+from discord_backend import discord_bot
+from common import common_bot
 from ernie import get_random_xkcd_image
 from ernie import get_random_ernie_image
 from ernie import get_random_hagar_image
-import time, datetime, random, requests, urllib, telegram_backend, lxml.html as html
+import time, datetime, random, requests, lxml.html as html
+from random import randint
+import re
 
-class PlanBot(telegram_bot):
+class PlanBot(common_bot):
     def strTimeProp(self, start, end, format, prop):
         """Get a time at a proportion of a range of two formatted times.
             start and end should be strings specifying times formated in the
@@ -29,48 +33,44 @@ class PlanBot(telegram_bot):
         url_to_dilbert_page = re.findall(r'"([^"]*)"', data_image)[0]
         return url_to_dilbert_page, random_date
 
-    def send_response(self, bot, update, args):
+    def create_response(self, args):
+        response = []
         if args[0] == "decide":
             args.pop(0)
-            args = [n.strip() for n in " ".join(args).split("või")]
-            response = args[randint(0, len(args)-1)]
-            bot.sendMessage(chat_id=update.message.chat_id, text="hmmm...")
+            args = [n.strip() for n in " ".join(args).split(" or ")]
+            response.append("hmmm...")
+            response.append(args[randint(0, len(args) - 1)])
         elif args[0] == "võtame":
-            with open("võtame.txt", "r") as f:
+            with open("võtame.txt", "r", encoding = "UTF-8") as f:
                 lines = f.readlines()
-                response = lines[randint(0, len(lines) - 1)]
+                response.append(lines[randint(0, len(lines) - 1)])
         elif args[0] == "installi":
             with open("installi.txt", "r") as f:
                 lines = f.readlines()
                 distro = lines[randint(0, len(lines) - 1)]
-                response = "installi " + distro
+                response.append("installi " + distro)
                 page = html.document_fromstring(requests.get("https://distrowatch.com/table.php?distribution={}".format(distro.lower())).text)
                 element = page.xpath("//td[@class='TablesTitle']/text()")
                 for i in element:
                     if len(i)>35:
-                        response += i
+                        response.append(i)
         elif args[0].lower() == "dilbert":
-            bot.sendChatAction(chat_id=update.message.chat_id, action=telegram_backend.ChatAction.UPLOAD_PHOTO)
             result = self.get_random_image()
-            bot.sendPhoto(chat_id=update.message.chat_id, photo=result[0])
-            response = "Dilbert comic on " + result[1]
+            response.append(result[0])
+            response.append("Dilbert comic on " + result[1])
         elif args[0].lower() == "xkcd":
-            bot.sendChatAction(chat_id=update.message.chat_id, action=telegram_backend.ChatAction.UPLOAD_PHOTO)
             data = get_random_xkcd_image()
-            print (data)
-            bot.sendMessage(chat_id=update.message.chat_id, text=data[0])
-            bot.sendPhoto(chat_id=update.message.chat_id, photo=data[1])
-            response = data[2]
+            response.append(data[0])
+            response.append(data[1])
+            response.append(data[2])
         elif args[0].lower() == "ernie":
-            bot.sendChatAction(chat_id=update.message.chat_id, action=telegram_backend.ChatAction.UPLOAD_PHOTO)
             data  = get_random_ernie_image()
-            bot.sendPhoto(chat_id=update.message.chat_id, photo=data[0])
-            response="Ernie comic on "+data[1]
+            response.append(data[0])
+            response.append("Ernie comic on " + data[1])
         elif args[0].lower() == "hagar":
-            bot.sendChatAction(chat_id=update.message.chat_id, action=telegram_backend.ChatAction.UPLOAD_PHOTO)
             data  = get_random_hagar_image()
-            bot.sendPhoto(chat_id=update.message.chat_id, photo=data[0])
-            response="Hagar comic on "+data[1]
+            response.append(data[0])
+            response.append("Hagar comic on " + data[1])
         elif  " ".join(args).lower() == "star wars" or " ".join(args).lower() == "fantastic beasts":
             if " ".join(args).lower() == "star wars": 
                 name = "Star Wars"
@@ -83,38 +83,43 @@ class PlanBot(telegram_bot):
                 month = 11
                 day = 16
             delta = datetime.datetime(year, month, day) - datetime.datetime.now()
-            bot.sendMessage(chat_id=update.message.chat_id, text=name + " tuleb välja:")
-            bot.sendMessage(chat_id=update.message.chat_id, text=str(delta.days) + " päeva")
+            response.append(name + " tuleb välja:")
+            response.append(str(delta.days) + " päeva")
             hours = 23 - datetime.datetime.now().hour
             if hours != 0:
-                bot.sendMessage(chat_id=update.message.chat_id, text=str(hours) + " tunni")
+                response.append(str(hours) + " tunni")
             minutes = 59 - datetime.datetime.now().minute
             if minutes != 0:
-                bot.sendMessage(chat_id=update.message.chat_id, text=str(minutes) + " minuti")
+                response.append(str(minutes) + " minuti")
             seconds = str(59 - datetime.datetime.now().second) + " sekundi"
-            bot.sendMessage(chat_id=update.message.chat_id, text=str(seconds))
-            response = "pärast"
+            response.append(str(seconds))
+            response.append("pärast")
         elif " ".join(args).lower() == "türa kus mu buss on":
-            bot.send_photo(chat_id=update.message.chat_id, photo=open('buss.jpg', 'rb'))
-            response = "Saue buss nr 190 läks põlema"
+            response.append('buss.jpg')
+            response.append("Saue buss nr 190 läks põlema")
         elif " ".join(args).lower() == "flap slap":
-            bot.send_photo(chat_id=update.message.chat_id, photo=open('flapslap.jpg', 'rb'))
-            response = ":)"
+            response.append('flapslap.jpg')
+            response.append(":))))")
         elif " ".join(args).lower() == "calmyotits":
-            bot.send_document(chat_id=update.message.chat_id, document=open('bill.mp4', 'rb'))
+            response.append('bill.mp4')
         elif " ".join(args).lower() == "clamyotits":
-            bot.send_document(chat_id=update.message.chat_id, document=open('clamyot.mp4', 'rb'))
+            response.append('clamyot.mp4')
         elif " ".join(args).lower() == "nope":
-            bot.send_document(chat_id=update.message.chat_id, document=open('nope_spongebob.mp4', 'rb'))
+            response.append('nope_spongebob.mp4')
         else:
-            with open(self.filename, "r") as f:
-                lines = f.readlines()
-            response = create_response(lines, args)
-            bot.sendMessage(chat_id=update.message.chat_id, text="1. " + " ".join(args))
-            bot.sendMessage(chat_id=update.message.chat_id, text="2. ...")
-        bot.sendMessage(chat_id=update.message.chat_id, text=response)
+            response.append("1. " + " ".join(args))
+            response.append("2. ...")
+            response.append(super(PlanBot, self).create_response(args))
+        return response
 
-filename = "plan.txt"
-token='265390616:AAGquQAVoMm0WO7HsmEKPscLwbYNvd3fsdE'
-command = 'plan'
-PlanBot(token, filename, command)
+class TelegramPlanBot(PlanBot, telegram_bot):
+    def __init__(self):
+        PlanBot.__init__(self, "plan.txt")
+        telegram_bot.__init__(self, '265390616:AAGquQAVoMm0WO7HsmEKPscLwbYNvd3fsdE', 'plan')
+
+class DiscordPlantBot(PlanBot, discord_bot):
+    def __init__(self):
+        PlanBot.__init__(self, "plan.txt")
+        discord_bot.__init__(self, 'MzU1NTg0ODYzOTk2MjE1Mjk2.DJO7uQ.bEL995vgQzPbXjS3LmwHsYpOMfY', 'plan')
+
+DiscordPlantBot()
