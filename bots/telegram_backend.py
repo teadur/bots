@@ -4,13 +4,17 @@ from telegram.ext import CommandHandler
 from telegram.ext import MessageHandler, Filters
 
 class telegram_bot(object):
-    def __init__(self, token, command):
+    def __init__(self, token, command, add_command=False):
+        self.add_command = add_command
         self.updater = Updater(token=token)
         self.dispatcher = self.updater.dispatcher
         self.response_handler = CommandHandler(command, self.response, pass_args = True, pass_user_data=True, pass_chat_data=True)
-        self.add_command_handler = CommandHandler('add', self.add_callback, pass_args = True, pass_user_data=True, pass_chat_data=True)
         self.dispatcher.add_handler(self.response_handler)
-        self.dispatcher.add_handler(self.add_command_handler)
+
+        if self.add_command:
+            self.add_command_handler = CommandHandler('add', self.add_callback, pass_args = True, pass_user_data=True, pass_chat_data=True)
+            self.dispatcher.add_handler(self.add_command_handler)
+
         self.echo_handler = MessageHandler(Filters.all, self.echo)
         self.dispatcher.add_handler(self.echo_handler)
         self.updater.start_polling()

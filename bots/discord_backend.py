@@ -2,8 +2,9 @@ import discord
 import discord.ext.commands
 
 class discord_bot(object):
-    def __init__(self, token, command):
-        self.command = '!' + command
+    def __init__(self, token, command, add_command=False):
+        self.command = command
+        self.add_command = add_command
         self.client = discord.Client()
         self.client.event(self.on_ready)
         self.client.event(self.on_message)
@@ -16,7 +17,7 @@ class discord_bot(object):
         print('------')
 #discord ei toeta videosid ega mp4-jasid. ainult gif-e nii et persse
     async def on_message(self, message):
-        if message.content.startswith(self.command):
+        if message.content.startswith('!' + self.command):
             args = message.content
             args = args.replace(self.command, "").strip()
             response = self.create_response(args.split(" "))
@@ -31,3 +32,9 @@ class discord_bot(object):
                     await self.client.send_message(message.channel, resp[1])
                 else:
                     await self.client.send_message(message.channel, "Unsupported format")
+        elif self.add_command and message.content.startswith('!add'):
+            add_string = "!add " + self.command
+            if add_string == (" ".join(message.content.split(" ")[:2])):
+                args = message.content
+                args = args.replace(add_string, "").strip()
+                await self.client.send_message(message.channel, self.add(args.split(" ")))

@@ -102,12 +102,12 @@ Yahtzee
 class TelegramInsultBot(InsultBot, telegram_bot):
     def __init__(self):
         InsultBot.__init__(self, "insults.txt")
-        telegram_bot.__init__(self, '297812849:AAFGeKrSX3lyWv3m5XGiu3pr9G6wuLae1E8', 'insult')
+        telegram_bot.__init__(self, '297812849:AAFGeKrSX3lyWv3m5XGiu3pr9G6wuLae1E8', 'insult', add_command=True)
 
 class DiscordInsultBot(InsultBot, discord_bot):
     def __init__(self):
         InsultBot.__init__(self, "insults.txt")
-        discord_bot.__init__(self, 'MzU1Mzg2MjMyNjA5NDM5NzU2.DJMDKQ.AFHnEsjsQaLgKT61bBtBKdY1fag', 'insult')
+        discord_bot.__init__(self, 'MzU1Mzg2MjMyNjA5NDM5NzU2.DJMDKQ.AFHnEsjsQaLgKT61bBtBKdY1fag', 'insult', add_command=True)
 
 TelegramInsultBot()
 #DiscordInsultBot()
