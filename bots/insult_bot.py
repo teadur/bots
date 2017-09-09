@@ -10,22 +10,22 @@ class InsultBot(common_bot):
         with open ("fuckyou.json", "r") as f:
             lines = [line for line in f if line.strip()]
         data = json.loads(" ".join(lines))
-        link = []
+        links = []
         for insult in data["data"]:
-            mp4 = insult.get("mp4")
-            if not mp4:
-                link.append(insult.get("link"))
+            link = insult.get("link")
+            if not link:
+                links.append(insult.get("mp4"))
             else:
-                link.append(mp4)
-        return link[randint(0, len(link) - 1)]
+                links.append(link)
+        return links[randint(0, len(links) - 1)]
 
     def create_response(self, args):
         if args[0] == "arvamus":
-            return open('arvamus.jpg', 'rb')
+            return 'arvamus.jpg'
         elif args[0] == "ultimate":
             return "You... dirty... stuck-up... sadistic... shit-eating, cocksucking, buttfucking, penis-smelling, crotch-grabbing, ball-licking, semen-drinking, dog-raping, Nazi-loving, child-touching, cow-humping, perverted, spineless, heartless, mindless, dickless, testicle-choking, urine-gargling, jerk-offing, horse face, sheep-fondling, toilet-kissing, self-centered, feces-puking, dildo-shoving, snot-spitting, crap-gathering, big-nosed, monkey-slapping, bastard-screwing, bean-shitting, fart-knocking, sack-busting, splooge-tasting, bear-blowing, head-swallowing, bitch-snatching, handjobbing, donkey-caressing, mucus-spewing, anal-plugging, ho-grabbing, uncircumsized, sewer-sipping, whore mongering, piss-swimming, midget-munching, douchebag, ho-biting, carnivorous, mail-order prostituting asshole!"
         elif args[0] == "rick":
-            return open('arvamus_rick.mp4', 'rb')
+            return 'arvamus_rick.mp4'
         elif args[0] == "hardbass":
             return "Опа опа пидорас , рушит город мой Хард басс , пиво, семки и напас , весь район боится нас"
         elif args[0] == "pegi":
@@ -96,7 +96,7 @@ Yahtzee
                 target = "Hey " + target
             return (target + "\n" + photo)
         elif " ".join(args[:2]).lower() == "fidget spinner":
-            return open('fidget_spinner.mp4', 'rb')
+            return 'fidget_spinner.mp4'
         else:
             return super(InsultBot, self).create_response(args)
 
