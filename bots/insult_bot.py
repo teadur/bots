@@ -22,15 +22,15 @@ class InsultBot(common_bot):
     def create_response(self, args):
         response = []
         if args[0] == "arvamus":
-            response.append('arvamus.jpg')
+            response.append(('photo', 'arvamus.jpg'))
         elif args[0] == "ultimate":
-            response.append("You... dirty... stuck-up... sadistic... shit-eating, cocksucking, buttfucking, penis-smelling, crotch-grabbing, ball-licking, semen-drinking, dog-raping, Nazi-loving, child-touching, cow-humping, perverted, spineless, heartless, mindless, dickless, testicle-choking, urine-gargling, jerk-offing, horse face, sheep-fondling, toilet-kissing, self-centered, feces-puking, dildo-shoving, snot-spitting, crap-gathering, big-nosed, monkey-slapping, bastard-screwing, bean-shitting, fart-knocking, sack-busting, splooge-tasting, bear-blowing, head-swallowing, bitch-snatching, handjobbing, donkey-caressing, mucus-spewing, anal-plugging, ho-grabbing, uncircumsized, sewer-sipping, whore mongering, piss-swimming, midget-munching, douchebag, ho-biting, carnivorous, mail-order prostituting asshole!")
+            response.append(("string", "You... dirty... stuck-up... sadistic... shit-eating, cocksucking, buttfucking, penis-smelling, crotch-grabbing, ball-licking, semen-drinking, dog-raping, Nazi-loving, child-touching, cow-humping, perverted, spineless, heartless, mindless, dickless, testicle-choking, urine-gargling, jerk-offing, horse face, sheep-fondling, toilet-kissing, self-centered, feces-puking, dildo-shoving, snot-spitting, crap-gathering, big-nosed, monkey-slapping, bastard-screwing, bean-shitting, fart-knocking, sack-busting, splooge-tasting, bear-blowing, head-swallowing, bitch-snatching, handjobbing, donkey-caressing, mucus-spewing, anal-plugging, ho-grabbing, uncircumsized, sewer-sipping, whore mongering, piss-swimming, midget-munching, douchebag, ho-biting, carnivorous, mail-order prostituting asshole!"))
         elif args[0] == "rick":
-            response.append('arvamus_rick.mp4')
+            response.append(("mp4", 'arvamus_rick.mp4'))
         elif args[0] == "hardbass":
-            response.append("Опа опа пидорас , рушит город мой Хард басс , пиво, семки и напас , весь район боится нас")
+            response.append(("string", "Опа опа пидорас , рушит город мой Хард басс , пиво, семки и напас , весь район боится нас"))
         elif args[0] == "pegi":
-            response.append (
+            response.append (("string",
 """
 On Sanity
 
@@ -89,14 +89,14 @@ But we'd all forgotten spoken language
 so he went unheard into a sandwich
 
 Yahtzee
-""")
+"""))
         elif " ".join(args[:2]).lower() == "fuck you":
             photo = self.get_gif()
-            response.append(photo)
+            response.append(("gif_link", photo))
         elif " ".join(args[:2]).lower() == "fidget spinner":
-            response.append('fidget_spinner.mp4')
+            response.append(("mp4", 'fidget_spinner.mp4'))
         else:
-            response.append(super(InsultBot, self).create_response(args))
+            response.append(("string", super(InsultBot, self).create_response(args)))
         return response
 
 class TelegramInsultBot(InsultBot, telegram_bot):
@@ -109,5 +109,5 @@ class DiscordInsultBot(InsultBot, discord_bot):
         InsultBot.__init__(self, "insults.txt")
         discord_bot.__init__(self, 'MzU1Mzg2MjMyNjA5NDM5NzU2.DJMDKQ.AFHnEsjsQaLgKT61bBtBKdY1fag', 'insult')
 
-#TelegramInsultBot()
-DiscordInsultBot()
+TelegramInsultBot()
+#DiscordInsultBot()

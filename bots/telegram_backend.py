@@ -38,5 +38,16 @@ class telegram_bot(object):
     def send_response(self, bot, update, args):
         response = self.create_response(args)
         for resp in response:
-            bot.sendMessage(chat_id=update.message.chat_id, text=resp)
+            if resp[0] == "string":
+                bot.sendMessage(chat_id=update.message.chat_id, text=resp[1])
+            elif resp[0] == "mp4":
+                bot.send_document(chat_id=update.message.chat_id, document=open(resp[1], 'rb'))
+            elif resp[0] == "photo":
+                bot.send_photo(chat_id=update.message.chat_id, photo=open(resp[1], 'rb'))
+            elif resp[0] == "gif_link":
+                bot.send_video(chat_id=update.message.chat_id, video=resp[1])
+            elif resp[0] == "photo_link":
+                bot.sendPhoto(chat_id=update.message.chat_id, photo=resp[1])
+            else:
+                bot.sendMessage(chat_id=update.message.chat_id, text="Unsupported format")
 

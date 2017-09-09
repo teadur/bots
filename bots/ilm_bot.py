@@ -94,18 +94,19 @@ def get_placenames():
 
 class IlmBot(object):
     def create_response(self, args):
+        response = []
         place = " ".join(args)
         if place == "":
-            response = get_weather("Tallinn")
+            response.append(("string", get_weather("Tallinn")))
         elif place == "Marilyni kodu":
-            response = "lausmärt"
+            response.append(("string", "lausmärt"))
         elif place == "tõde":
-            response = open('ilm.jpg', 'rb')
+            response.append(("photo", 'ilm.jpg'))
         else:
-            response = get_weather(place)
+            response.append(("string", get_weather(place)))
         if not response:
-            response = "Not found, try one of the following: \n" + get_placenames()
-        return [response]
+            response.append(("string", "Not found, try one of the following: \n" + get_placenames()))
+        return response
 
 class TelegramIlmBot(telegram_bot, IlmBot):
     def __init__(self):

@@ -6,13 +6,13 @@ class ComplimentBot(common_bot):
     def create_response(self, args):
         response = []
         if args[0] == "skiimoovi":
-            response.append (
+            response.append (("string",
             """
             Norra on nii ilus vää
             https://youtu.be/gD8Hs4xWVhQ
-            """)
+            """))
         else:
-            response.append(super(ComplimentBot, self).create_response(args))
+            response.append(("string", super(ComplimentBot, self).create_response(args)))
         return response
 
 class TelegramComplimentBot(ComplimentBot, telegram_bot):

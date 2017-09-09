@@ -19,10 +19,15 @@ class discord_bot(object):
         if message.content.startswith(self.command):
             args = message.content
             args = args.replace(self.command, "").strip()
-            response = self.create_response([args])
+            response = self.create_response(args.split(" "))
             for resp in response:
-                await self.client.send_message(message.channel, resp)
-            #photo = discord.Embed()
-            #photo.set_image(url="http://i.imgur.com/zl8Z8tY.mp4")
-            #await self.client.send_message(message.channel, embed=photo)
-            #await client.send_file(message.channel, 'arvamus.jpg')
+                if resp[0] == "photo":
+                    await self.client.send_file(message.channel, resp[1])
+                elif resp[0] == "gif_link" or resp[0] == "photo_link":
+                    photo = discord.Embed()
+                    photo.set_image(url=resp[1])
+                    await self.client.send_message(message.channel, embed=photo)
+                elif resp[0] == "string":
+                    await self.client.send_message(message.channel, resp[1])
+                else:
+                    await self.client.send_message(message.channel, "Unsupported format")

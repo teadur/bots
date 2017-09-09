@@ -38,39 +38,39 @@ class PlanBot(common_bot):
         if args[0] == "decide":
             args.pop(0)
             args = [n.strip() for n in " ".join(args).split(" or ")]
-            response.append("hmmm...")
-            response.append(args[randint(0, len(args) - 1)])
+            response.append(("string", "hmmm..."))
+            response.append(("string", args[randint(0, len(args) - 1)]))
         elif args[0] == "võtame":
             with open("võtame.txt", "r", encoding = "UTF-8") as f:
                 lines = f.readlines()
-                response.append(lines[randint(0, len(lines) - 1)])
+                response.append(("string", lines[randint(0, len(lines) - 1)]))
         elif args[0] == "installi":
             with open("installi.txt", "r") as f:
                 lines = f.readlines()
                 distro = lines[randint(0, len(lines) - 1)]
-                response.append("installi " + distro)
+                response.append(("string", "installi " + distro))
                 page = html.document_fromstring(requests.get("https://distrowatch.com/table.php?distribution={}".format(distro.lower())).text)
                 element = page.xpath("//td[@class='TablesTitle']/text()")
                 for i in element:
                     if len(i)>35:
-                        response.append(i)
+                        response.append(("string", i))
         elif args[0].lower() == "dilbert":
             result = self.get_random_image()
-            response.append(result[0])
-            response.append("Dilbert comic on " + result[1])
+            response.append(("photo_link", result[0]))
+            response.append(("string", "Dilbert comic on " + result[1]))
         elif args[0].lower() == "xkcd":
             data = get_random_xkcd_image()
-            response.append(data[0])
-            response.append(data[1])
-            response.append(data[2])
+            response.append(("string", data[0]))
+            response.append(("photo_link", data[1]))
+            response.append(("string", data[2]))
         elif args[0].lower() == "ernie":
             data  = get_random_ernie_image()
-            response.append(data[0])
-            response.append("Ernie comic on " + data[1])
+            response.append(("photo_link", data[0]))
+            response.append(("string", "Ernie comic on " + data[1]))
         elif args[0].lower() == "hagar":
             data  = get_random_hagar_image()
-            response.append(data[0])
-            response.append("Hagar comic on " + data[1])
+            response.append(("photo_link", data[0]))
+            response.append(("string", "Hagar comic on " + data[1]))
         elif  " ".join(args).lower() == "star wars" or " ".join(args).lower() == "fantastic beasts":
             if " ".join(args).lower() == "star wars": 
                 name = "Star Wars"
@@ -83,33 +83,33 @@ class PlanBot(common_bot):
                 month = 11
                 day = 16
             delta = datetime.datetime(year, month, day) - datetime.datetime.now()
-            response.append(name + " tuleb välja:")
-            response.append(str(delta.days) + " päeva")
+            response.append(("string", name + " tuleb välja:"))
+            response.append(("string", str(delta.days) + " päeva"))
             hours = 23 - datetime.datetime.now().hour
             if hours != 0:
-                response.append(str(hours) + " tunni")
+                response.append(("string", str(hours) + " tunni"))
             minutes = 59 - datetime.datetime.now().minute
             if minutes != 0:
-                response.append(str(minutes) + " minuti")
+                response.append(("string", str(minutes) + " minuti"))
             seconds = str(59 - datetime.datetime.now().second) + " sekundi"
-            response.append(str(seconds))
-            response.append("pärast")
+            response.append(("string", str(seconds)))
+            response.append(("string", "pärast"))
         elif " ".join(args).lower() == "türa kus mu buss on":
-            response.append('buss.jpg')
-            response.append("Saue buss nr 190 läks põlema")
+            response.append(("photo", 'buss.jpg'))
+            response.append(("string", "Saue buss nr 190 läks põlema"))
         elif " ".join(args).lower() == "flap slap":
-            response.append('flapslap.jpg')
-            response.append(":))))")
+            response.append(("photo", 'flapslap.jpg'))
+            response.append(("string", ":))))"))
         elif " ".join(args).lower() == "calmyotits":
-            response.append('bill.mp4')
+            response.append(("mp4", 'bill.mp4'))
         elif " ".join(args).lower() == "clamyotits":
-            response.append('clamyot.mp4')
+            response.append(("mp4", 'clamyot.mp4'))
         elif " ".join(args).lower() == "nope":
-            response.append('nope_spongebob.mp4')
+            response.append(("mp4", 'nope_spongebob.mp4'))
         else:
-            response.append("1. " + " ".join(args))
-            response.append("2. ...")
-            response.append(super(PlanBot, self).create_response(args))
+            response.append(("string", "1. " + " ".join(args)))
+            response.append(("string", "2. ..."))
+            response.append(("string", super(PlanBot, self).create_response(args)))
         return response
 
 class TelegramPlanBot(PlanBot, telegram_bot):
