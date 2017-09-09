@@ -19,7 +19,7 @@ class discord_bot(object):
     async def on_message(self, message):
         if message.content.startswith('!' + self.command):
             args = message.content
-            args = args.replace(self.command, "").strip()
+            args = args.replace('!' + self.command, "").strip()
             response = self.create_response(args.split(" "))
             for resp in response:
                 if resp[0] == "photo":
