@@ -12,6 +12,8 @@ class ComplimentBot(common_bot):
             Norra on nii ilus vää
             https://youtu.be/gD8Hs4xWVhQ
             """))
+        elif " ".join(args).lower() == "hugo boss":
+            response.append(("mp4", "hugo boss.webm"))
         else:
             response.append(("string", super(ComplimentBot, self).create_response(args)))
         return response
