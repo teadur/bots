@@ -106,6 +106,16 @@ class PlanBot(common_bot):
             response.append(("mp4", 'clamyot.mp4'))
         elif " ".join(args).lower() == "nope":
             response.append(("mp4", 'nope_spongebob.mp4'))
+        elif " ".join(args).lower() == "appi mumble":
+            response.append(("string",
+                            """ kahtlane.info server
+                            server: mumble.kahtlane.info
+                            kanal: PlayFair
+                            access token: plfreu"""))
+            response.append(("photo", "mumble/step1"))
+            response.append(("photo", "mumble/step2"))
+            response.append(("photo", "mumble/step3"))
+            response.append(("photo", "mumble/step4"))
         else:
             response.append(("string", "1. " + " ".join(args)))
             response.append(("string", "2. ..."))
