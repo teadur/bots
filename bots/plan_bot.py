@@ -112,10 +112,10 @@ class PlanBot(common_bot):
                             server: mumble.kahtlane.info
                             kanal: PlayFair
                             access token: plfreu"""))
-            response.append(("photo", "mumble/step1"))
-            response.append(("photo", "mumble/step2"))
-            response.append(("photo", "mumble/step3"))
-            response.append(("photo", "mumble/step4"))
+            response.append(("photo", "mumble/step1.png"))
+            response.append(("photo", "mumble/step2.png"))
+            response.append(("photo", "mumble/step3.png"))
+            response.append(("photo", "mumble/step4.png"))
         else:
             response.append(("string", "1. " + " ".join(args)))
             response.append(("string", "2. ..."))
