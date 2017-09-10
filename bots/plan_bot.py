@@ -108,10 +108,10 @@ class PlanBot(common_bot):
             response.append(("mp4", 'nope_spongebob.mp4'))
         elif " ".join(args).lower() == "appi mumble":
             response.append(("string",
-                            """ kahtlane.info server
-                            server: mumble.kahtlane.info
-                            kanal: PlayFair
-                            access token: plfreu"""))
+                            """kahtlane.info server
+server: mumble.kahtlane.info
+kanal: PlayFair
+access token: plfreu"""))
             response.append(("photo", "mumble/step1.png"))
             response.append(("photo", "mumble/step2.png"))
             response.append(("photo", "mumble/step3.png"))
