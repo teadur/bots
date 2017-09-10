@@ -13,7 +13,7 @@ class ComplimentBot(common_bot):
             https://youtu.be/gD8Hs4xWVhQ
             """))
         elif " ".join(args).lower() == "hugo boss":
-            response.append(("mp4", "hugo boss.webm"))
+            response.append(("mp4", "hugo_boss.mp4"))
         else:
             response.append(("string", super(ComplimentBot, self).create_response(args)))
         return response
