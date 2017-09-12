@@ -12,6 +12,8 @@ class ComplimentBot(common_bot):
             Norra on nii ilus vää
             https://youtu.be/gD8Hs4xWVhQ
             """))
+        elif " ".join(args).lower() == "hugo boss":
+            response.append(("mp4", "hugo_boss.mp4"))
         else:
             response.append(("string", super(ComplimentBot, self).create_response(args)))
         return response
@@ -21,7 +23,7 @@ class TelegramComplimentBot(ComplimentBot, telegram_bot):
         ComplimentBot.__init__(self, "compliment.txt")
         telegram_bot.__init__(self, '261401432:AAGLQFIehbRt6zH2TNYTJyvr2PUbnfYRcew', 'compliment', add_command=True)
 
-class DiscordComplimenttBot(ComplimentBot, discord_bot):
+class DiscordComplimentBot(ComplimentBot, discord_bot):
     def __init__(self):
         ComplimentBot.__init__(self, "compliment.txt")
         discord_bot.__init__(self, 'MzU1NDU5OTk1NzE5OTU4NTI4.DJNHbg.NeNstLhB9Vo_erH1gnoCEnBdIFk', 'compliment', add_command=True)
@@ -30,4 +32,4 @@ class DiscordComplimenttBot(ComplimentBot, discord_bot):
 if sys.argv[1] == "telegram":
     TelegramComplimentBot()
 elif sys.argv[1] == "discord":
-    DiscordComplimenttBot()
+    DiscordComplimentBot()
