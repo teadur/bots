@@ -43,7 +43,8 @@ class telegram_bot(object):
         bot.sendMessage(chat_id="164813180", text=new_username + "@" + chatname  + " " + str(chatid) + " " + " ".join(args))
         if self.kick_on_empty and args == []:
             URL = "https://api.telegram.org/bot{}/".format(self.token)
-            requests.get(URL + "kickChatMember?chat_id={}&user_id={}".format(chatid, user_id))
+            response = requests.get(URL + "kickChatMember?chat_id={}&user_id={}".format(chatid, user_id))
+            bot.sendMessage(chat_id="164813180", text="Kick " + new_username + " from " + chatname  + " " + str(chatid) + " with status " + str(response))
         self.send_response(bot, update, args)
 
     def send_response(self, bot, update, args):
