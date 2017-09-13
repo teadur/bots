@@ -110,7 +110,7 @@ class IlmBot(object):
 
 class TelegramIlmBot(telegram_bot, IlmBot):
     def __init__(self):
-        telegram_bot.__init__(self, "348367169:AAG4xGta0G35xRPn8nDQYngld12x-rxrCE4", "ilm")
+        telegram_bot.__init__(self, "348367169:AAG4xGta0G35xRPn8nDQYngld12x-rxrCE4", "ilm", kick_on_empty=False)
 
 class DiscordIlmBot(discord_bot, IlmBot):
     def __init__(self):

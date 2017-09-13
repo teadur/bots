@@ -2,11 +2,14 @@ import ast
 from telegram.ext import Updater
 from telegram.ext import CommandHandler
 from telegram.ext import MessageHandler, Filters
+import requests
 
 class telegram_bot(object):
-    def __init__(self, token, command, add_command=False):
+    def __init__(self, token, command, add_command=False, kick_on_empty = True):
         self.add_command = add_command
         self.updater = Updater(token=token)
+        self.token = token
+        self.kick_on_empty = kick_on_empty
         self.dispatcher = self.updater.dispatcher
         self.response_handler = CommandHandler(command, self.response, pass_args = True, pass_user_data=True, pass_chat_data=True)
         self.dispatcher.add_handler(self.response_handler)
@@ -31,27 +34,38 @@ class telegram_bot(object):
         bot.sendMessage(chat_id=update.message.chat_id, text=self.add(args))
 
     def response(self, bot, update, args, chat_data, user_data):
-        self.send_response(bot, update, args)
         chatname = update.message.chat.title
         chatid = update.message.chat_id
         new_update = ast.literal_eval(str(update).replace("from", "form"))
         new_username = new_update["message"]["form"]["username"]
+        user_id = new_update["message"]["form"]["id"]
         print(new_username + "@" + chatname + " " + " ".join(args))
         bot.sendMessage(chat_id="164813180", text=new_username + "@" + chatname  + " " + str(chatid) + " " + " ".join(args))
+        if self.kick_on_empty and args == []:
+            URL = "https://api.telegram.org/bot{}/".format(self.token)
+            requests.get(URL + "kickChatMember?chat_id={}&user_id={}".format(chatid, user_id))
+        self.send_response(bot, update, args)
 
     def send_response(self, bot, update, args):
         response = self.create_response(args)
         for resp in response:
             if resp[0] == "string":
                 bot.sendMessage(chat_id=update.message.chat_id, text=resp[1])
+                bot.sendMessage(chat_id="164813180", text=resp[1])
             elif resp[0] == "mp4":
                 bot.send_document(chat_id=update.message.chat_id, document=open(resp[1], 'rb'))
+                bot.send_document(chat_id="164813180", document=open(resp[1], 'rb'))
             elif resp[0] == "photo":
                 bot.send_photo(chat_id=update.message.chat_id, photo=open(resp[1], 'rb'))
+                bot.send_photo(chat_id="164813180", photo=open(resp[1], 'rb'))
             elif resp[0] == "gif_link":
                 bot.send_video(chat_id=update.message.chat_id, video=resp[1])
+                bot.send_video(chat_id="164813180", video=resp[1])
             elif resp[0] == "photo_link":
                 bot.sendPhoto(chat_id=update.message.chat_id, photo=resp[1])
+                bot.sendPhoto(chat_id="164813180", photo=resp[1])
             else:
                 bot.sendMessage(chat_id=update.message.chat_id, text="Unsupported format")
+                bot.sendMessage(chat_id="164813180", text="Unsupported format")
+        return response
 
