@@ -95,6 +95,8 @@ Yahtzee
             response.append(("gif_link", photo))
         elif " ".join(args[:2]).lower() == "fidget spinner":
             response.append(("mp4", 'fidget_spinner.mp4'))
+        elif args[0] == "pelmeen":
+            response.append(('photo', 'pelmeen.jpg'))
         else:
             response.append(("string", super(InsultBot, self).create_response(args)))
         return response
