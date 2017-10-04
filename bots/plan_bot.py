@@ -116,6 +116,22 @@ access token: plfreu"""))
             response.append(("photo", "mumble/step2.png"))
             response.append(("photo", "mumble/step3.png"))
             response.append(("photo", "mumble/step4.png"))
+        elif " ".join(args).lower() == "annika läheb mehele":
+            response.append(("string", """
+/     /                   ‾‾ Y \\
+|     (\     (.         /)    |)    \\
+  ◝       ◝  ' ( ͡° ͜ʖ ͡°) _  ◞      )
+     \    |    ︵ Y  ︵ /    /
+      |    ◝        |       )   /
+       \  ト ‾‾ 本 ‾‾   イ
+           |  ミ ホ ミ /
+            )\     ∘    /
+          (   \        /
+        /       /ώ≡≡≡≡≡≡≡D
+      /        /    \\      \\
+    (         (/      \\       \\
+      \      \         \)      )
+       \     /         /    /"""))
         else:
             response.append(("string", "1. " + " ".join(args)))
             response.append(("string", "2. ..."))
