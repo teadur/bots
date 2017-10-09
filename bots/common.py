@@ -2,7 +2,7 @@ from random import randint
 import re
 
 class common_bot(object):
-    def __init__(self, filename):
+    def __init__(self, filename = None):
         self.filename = filename
 
     def create_response(self, args):
@@ -37,3 +37,14 @@ class common_bot(object):
             return "Added " + new_line + " to " + self.filename
         else:
             return "Õpi kirjutama, loll. Tühja asja ma ei söö."
+
+    def remove_last(self):
+        with open (self.filename, "r", encoding = "UTF-8") as f:
+            lines = [line for line in f if line.strip()]
+        last_line = lines[-1]
+        lines.remove(last_line)
+
+        with open (self.filename, "w", encoding = "UTF-8") as f:
+            for line in lines:
+                f.write(line)
+        return "Removed " + last_line.rstrip() + " from " + self.filename

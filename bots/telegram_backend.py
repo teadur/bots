@@ -17,10 +17,21 @@ class telegram_bot(object):
         if self.add_command:
             self.add_command_handler = CommandHandler('add', self.add_callback, pass_args = True, pass_user_data=True, pass_chat_data=True)
             self.dispatcher.add_handler(self.add_command_handler)
+            self.remove_command_handler = CommandHandler('remove', self.remove_callback, pass_args=True, pass_user_data=True, pass_chat_data=True)
+            self.dispatcher.add_handler(self.remove_command_handler)
 
         self.echo_handler = MessageHandler(Filters.all, self.echo)
         self.dispatcher.add_handler(self.echo_handler)
         self.updater.start_polling()
+
+    def remove_callback(self, bot, update, args, chat_data, user_data):
+        new_update = ast.literal_eval(str(update).replace("from", "form"))
+        user_id = new_update["message"]["form"]["id"]
+        if user_id == 164813180:
+            response = self.remove_last()
+        else:
+            response = "Fuck off"
+        bot.sendMessage(chat_id=update.message.chat_id, text=response)
 
     def echo(self, bot, update):
         chatname = update.message.chat.title
