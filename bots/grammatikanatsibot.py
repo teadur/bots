@@ -29,7 +29,7 @@ class GrammarBot(object):
 			print (e)
 
 		if len(response) > 4096:
-			return (response[:4090]+"...")
+			return [("string", response[:4090]+"...")]
 		return [("string", response)]
 
 class TelegramGrammarBot(telegram_bot, GrammarBot):
@@ -39,7 +39,6 @@ class TelegramGrammarBot(telegram_bot, GrammarBot):
 class DiscordGrammarBot(discord_bot, GrammarBot):
 	def __init__(self):
 		discord_bot.__init__(self, "MzU1NTgzMzYwMzI1NjQ4Mzk0.DJO6Uw.YP_WH7Oo76QWJc9Y2ZNMIeV53Ys", "targuta")
-
 
 if sys.argv[1] == "telegram":
 	TelegramGrammarBot()
