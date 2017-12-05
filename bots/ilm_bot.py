@@ -60,27 +60,24 @@ def get_weather(place):
 
     for n in xml.xpath("//name"):
         n.text = n.text.lower()
-    try:
-        weather_subtree = xml.xpath("//station[name[text()[contains(.,'" + place.lower() + "')]]]")[0]
+    weather_subtree = xml.xpath("//station[name[text()[contains(.,'" + place.lower() + "')]]]")[0]
 
-        #print ET.tostring(weather_subtree, pretty_print = True)
-    
-        for child in weather_subtree.xpath("./*[not(name()='name') and not(name()='wmocode') and not(name()='longitude') and not(name()='latitude') and not(name()='waterlevel') and text()!='']"):
-            if child.tag == "phenomenon":
-                weather += child.text + "\n"
-            elif child.tag in comment2tag:
-                measurement +=  child.text + units[child.tag] + " "
-                for limit in comment2tag[child.tag][0]:
-                    if float(child.text) < limit:
-                        measurement += comment2tag[child.tag][0][limit] + "\n"
-                        break
-                else:
-                    measurement += comment2tag[child.tag][1] + "\n"
+    #print ET.tostring(weather_subtree, pretty_print = True)
+
+    for child in weather_subtree.xpath("./*[not(name()='name') and not(name()='wmocode') and not(name()='longitude') and not(name()='latitude') and not(name()='waterlevel') and text()!='']"):
+        if child.tag == "phenomenon":
+            weather += child.text + "\n"
+        elif child.tag in comment2tag:
+            measurement +=  child.text + units[child.tag] + " "
+            for limit in comment2tag[child.tag][0]:
+                if float(child.text) < limit:
+                    measurement += comment2tag[child.tag][0][limit] + "\n"
+                    break
             else:
-                weather += child.tag + " " + child.text + units.get(child.tag, default = "") + "\n"
-        returnvalue = "Weather in " + place + ":\n" + measurement + weather
-    except:
-        returnvalue = None
+                measurement += comment2tag[child.tag][1] + "\n"
+        else:
+            weather += child.tag + " " + child.text + units.get(child.tag, "") + "\n"
+    returnvalue = "Weather in " + place + ":\n" + measurement + weather
     return returnvalue
 
 def get_placenames():
