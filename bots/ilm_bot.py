@@ -77,7 +77,7 @@ def get_weather(place):
                 else:
                     measurement += comment2tag[child.tag][1] + "\n"
             else:
-                weather += child.tag + " " + child.text + units[child.tag] + "\n"
+                weather += child.tag + " " + child.text + units.get(child.tag, default = "") + "\n"
         returnvalue = "Weather in " + place + ":\n" + measurement + weather
     except:
         returnvalue = None
