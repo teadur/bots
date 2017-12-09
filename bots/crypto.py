@@ -8,5 +8,9 @@ def getCryptoPrice(currency):
     r = requests.get(url)
 
     if r.status_code == 200:
-        result = currency + " price: " + str(r.json().get('EUR', "Not found, moron")) + " EUR"
+        result = str(r.json().get('EUR', ""))
+    if result == "":
+        result = "Not found, moron"
+    else:
+        result = currency + " price: " + result + " EUR"
     return result
