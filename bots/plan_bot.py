@@ -6,6 +6,7 @@ from ernie import get_random_ernie_image
 from ernie import get_random_hagar_image
 import time, datetime, random, requests, lxml.html as html
 from random import randint
+from crypto import getCryptoPrice
 import re, sys
 
 class PlanBot(common_bot):
@@ -97,6 +98,8 @@ class PlanBot(common_bot):
         elif " ".join(args).lower() == "türa kus mu buss on":
             response.append(("photo", 'buss.jpg'))
             response.append(("string", "Saue buss nr 190 läks põlema"))
+        elif args[0].lower() == "price":
+            response.append(("string", getCryptoPrice(args[1])))
         elif " ".join(args).lower() == "flap slap":
             response.append(("photo", 'flapslap.jpg'))
             response.append(("string", ":))))"))
