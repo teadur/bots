@@ -1,14 +1,17 @@
 import discord
 import discord.ext.commands
+import configparser
 
 class discord_bot(object):
     def __init__(self, token, command, add_command=False):
+        config = configparser.ConfigParser()
+        config.read('api_keys.ini')
         self.command = command
         self.add_command = add_command
         self.client = discord.Client()
         self.client.event(self.on_ready)
         self.client.event(self.on_message)
-        self.client.run(token)
+        self.client.run(config["DISCORD_KEYS"][command])
 
     async def on_ready(self):
         print('Logged in as')

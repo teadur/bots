@@ -3,12 +3,15 @@ from telegram.ext import Updater
 from telegram.ext import CommandHandler
 from telegram.ext import MessageHandler, Filters
 import requests
+import configparser
 
 class telegram_bot(object):
     def __init__(self, token, command, add_command=False, kick_on_empty = True):
+        config = configparser.ConfigParser()
+        config.read('api_keys.ini')
         self.add_command = add_command
-        self.updater = Updater(token=token)
-        self.token = token
+        self.token = config["TELEGRAM_KEYS"][command]
+        self.updater = Updater(token=self.token)
         self.kick_on_empty = kick_on_empty
         self.dispatcher = self.updater.dispatcher
         self.response_handler = CommandHandler(command, self.response, pass_args = True, pass_user_data=True, pass_chat_data=True)
