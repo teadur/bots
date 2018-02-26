@@ -1,33 +1,36 @@
-from bot_backend import bot
+from telegram_backend import telegram_bot
+from discord_backend import discord_bot
+from common import common_bot
 from random import randint
-import json
+import json, sys
 
-class InsultBot(bot):
+class InsultBot(common_bot):
 
     def get_gif(self):
         with open ("fuckyou.json", "r") as f:
             lines = [line for line in f if line.strip()]
         data = json.loads(" ".join(lines))
-        link = []
+        links = []
         for insult in data["data"]:
-            mp4 = insult.get("mp4")
-            if not mp4:
-                link.append(insult.get("link"))
+            link = insult.get("link")
+            if not link:
+                links.append(insult.get("mp4"))
             else:
-                link.append(mp4)
-        return link[randint(0, len(link) - 1)]
+                links.append(link)
+        return links[randint(0, len(links) - 1)]
 
-    def send_response(self, bot, update, args):
+    def create_response(self, args):
+        response = []
         if args[0] == "arvamus":
-            bot.send_photo(chat_id=update.message.chat_id, photo=open('arvamus.jpg', 'rb'))
+            response.append(('photo', 'arvamus.jpg'))
         elif args[0] == "ultimate":
-            bot.sendMessage(chat_id=update.message.chat_id, text="You... dirty... stuck-up... sadistic... shit-eating, cocksucking, buttfucking, penis-smelling, crotch-grabbing, ball-licking, semen-drinking, dog-raping, Nazi-loving, child-touching, cow-humping, perverted, spineless, heartless, mindless, dickless, testicle-choking, urine-gargling, jerk-offing, horse face, sheep-fondling, toilet-kissing, self-centered, feces-puking, dildo-shoving, snot-spitting, crap-gathering, big-nosed, monkey-slapping, bastard-screwing, bean-shitting, fart-knocking, sack-busting, splooge-tasting, bear-blowing, head-swallowing, bitch-snatching, handjobbing, donkey-caressing, mucus-spewing, anal-plugging, ho-grabbing, uncircumsized, sewer-sipping, whore mongering, piss-swimming, midget-munching, douchebag, ho-biting, carnivorous, mail-order prostituting asshole!")
+            response.append(("string", "You... dirty... stuck-up... sadistic... shit-eating, cocksucking, buttfucking, penis-smelling, crotch-grabbing, ball-licking, semen-drinking, dog-raping, Nazi-loving, child-touching, cow-humping, perverted, spineless, heartless, mindless, dickless, testicle-choking, urine-gargling, jerk-offing, horse face, sheep-fondling, toilet-kissing, self-centered, feces-puking, dildo-shoving, snot-spitting, crap-gathering, big-nosed, monkey-slapping, bastard-screwing, bean-shitting, fart-knocking, sack-busting, splooge-tasting, bear-blowing, head-swallowing, bitch-snatching, handjobbing, donkey-caressing, mucus-spewing, anal-plugging, ho-grabbing, uncircumsized, sewer-sipping, whore mongering, piss-swimming, midget-munching, douchebag, ho-biting, carnivorous, mail-order prostituting asshole!"))
         elif args[0] == "rick":
-            bot.send_document(chat_id=update.message.chat_id, document=open('arvamus_rick.mp4', 'rb'))
+            response.append(("mp4", 'arvamus_rick.mp4'))
         elif args[0] == "hardbass":
-            bot.sendMessage(chat_id=update.message.chat_id, text="Опа опа пидорас , рушит город мой Хард басс , пиво, семки и напас , весь район боится нас")
+            response.append(("string", "Опа опа пидорас , рушит город мой Хард басс , пиво, семки и напас , весь район боится нас"))
         elif args[0] == "pegi":
-            bot.sendMessage(chat_id=update.message.chat_id, text=
+            response.append (("string",
 """
 On Sanity
 
@@ -86,21 +89,29 @@ But we'd all forgotten spoken language
 so he went unheard into a sandwich
 
 Yahtzee
-""")
+"""))
         elif " ".join(args[:2]).lower() == "fuck you":
             photo = self.get_gif()
-            target = " ".join(args[2:])
-            if target:
-                target = "Hey " + target
-                bot.sendMessage(chat_id=update.message.chat_id, text=target)
-            bot.send_video(chat_id=update.message.chat_id, video=photo)
+            response.append(("gif_link", photo))
         elif " ".join(args[:2]).lower() == "fidget spinner":
-            bot.send_document(chat_id=update.message.chat_id, document=open('fidget_spinner.mp4', 'rb'))
+            response.append(("mp4", 'fidget_spinner.mp4'))
+        elif args[0] == "pelmeen":
+            response.append(('photo', 'pelmeen.jpg'))
         else:
-            super(InsultBot, self).send_response(bot,update,args)
+            response.append(("string", super(InsultBot, self).create_response(args)))
+        return response
 
-filename = "insults.txt"
-token='297812849:AAFGeKrSX3lyWv3m5XGiu3pr9G6wuLae1E8'
-command = 'insult'
+class TelegramInsultBot(InsultBot, telegram_bot):
+    def __init__(self):
+        InsultBot.__init__(self, "insults.txt")
+        telegram_bot.__init__(self, '297812849:AAFGeKrSX3lyWv3m5XGiu3pr9G6wuLae1E8', 'insult', add_command=True)
 
-InsultBot(token, filename, command)
+class DiscordInsultBot(InsultBot, discord_bot):
+    def __init__(self):
+        InsultBot.__init__(self, "insults.txt")
+        discord_bot.__init__(self, 'MzU1Mzg2MjMyNjA5NDM5NzU2.DJMDKQ.AFHnEsjsQaLgKT61bBtBKdY1fag', 'insult', add_command=True)
+
+if sys.argv[1] == "telegram":
+    TelegramInsultBot()
+elif sys.argv[1] == "discord":
+    DiscordInsultBot()

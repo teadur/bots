@@ -1,6 +1,7 @@
-from bot_backend import bot
+from telegram_backend import telegram_bot
+from discord_backend import discord_bot
 import lxml.etree as ET
-import urllib.request
+import urllib.request, sys
 
 def get_xml():
     req = urllib.request.Request(
@@ -59,27 +60,24 @@ def get_weather(place):
 
     for n in xml.xpath("//name"):
         n.text = n.text.lower()
-    try:
-        weather_subtree = xml.xpath("//station[name[text()[contains(.,'" + place.lower() + "')]]]")[0]
+    weather_subtree = xml.xpath("//station[name[text()[contains(.,'" + place.lower() + "')]]]")[0]
 
-        #print ET.tostring(weather_subtree, pretty_print = True)
-    
-        for child in weather_subtree.xpath("./*[not(name()='name') and not(name()='wmocode') and not(name()='longitude') and not(name()='latitude') and not(name()='waterlevel') and text()!='']"):
-            if child.tag == "phenomenon":
-                weather += child.text + "\n"
-            elif child.tag in comment2tag:
-                measurement +=  child.text + units[child.tag] + " "
-                for limit in comment2tag[child.tag][0]:
-                    if float(child.text) < limit:
-                        measurement += comment2tag[child.tag][0][limit] + "\n"
-                        break
-                else:
-                    measurement += comment2tag[child.tag][1] + "\n"
+    #print ET.tostring(weather_subtree, pretty_print = True)
+
+    for child in weather_subtree.xpath("./*[not(name()='name') and not(name()='wmocode') and not(name()='longitude') and not(name()='latitude') and not(name()='waterlevel') and text()!='']"):
+        if child.tag == "phenomenon":
+            weather += child.text + "\n"
+        elif child.tag in comment2tag:
+            measurement +=  child.text + units[child.tag] + " "
+            for limit in comment2tag[child.tag][0]:
+                if float(child.text) < limit:
+                    measurement += comment2tag[child.tag][0][limit] + "\n"
+                    break
             else:
-                weather += child.tag + " " + child.text + units[child.tag] + "\n"
-        returnvalue = "Weather in " + place + ":\n" + measurement + weather
-    except:
-        returnvalue = None
+                measurement += comment2tag[child.tag][1] + "\n"
+        else:
+            weather += child.tag + " " + child.text + units.get(child.tag, "") + "\n"
+    returnvalue = "Weather in " + place + ":\n" + measurement + weather
     return returnvalue
 
 def get_placenames():
@@ -91,21 +89,31 @@ def get_placenames():
 
     return " ".join(placenames)
 
-class IlmBot(bot):
-    def send_response(self, bot, update, args):
+class IlmBot(object):
+    def create_response(self, args):
+        response = []
         place = " ".join(args)
         if place == "":
-            response = get_weather("Tallinn")
+            response.append(("string", get_weather("Tallinn")))
         elif place == "Marilyni kodu":
-            response = "lausmärt"
+            response.append(("string", "lausmärt"))
         elif place == "tõde":
-            bot.send_photo(chat_id=update.message.chat_id, photo=open('ilm.jpg', 'rb'))
-            response = "TRUTH"
+            response.append(("photo", 'ilm.jpg'))
         else:
-            response = get_weather(place)
+            response.append(("string", get_weather(place)))
         if not response:
-            response = "Not found, try one of the following: \n" + get_placenames()
-        bot.sendMessage(chat_id=update.message.chat_id, text=response)
+            response.append(("string", "Not found, try one of the following: \n" + get_placenames()))
+        return response
 
-token = "348367169:AAG4xGta0G35xRPn8nDQYngld12x-rxrCE4"
-IlmBot(token, None, "ilm")
+class TelegramIlmBot(telegram_bot, IlmBot):
+    def __init__(self):
+        telegram_bot.__init__(self, "348367169:AAG4xGta0G35xRPn8nDQYngld12x-rxrCE4", "ilm", kick_on_empty=False)
+
+class DiscordIlmBot(discord_bot, IlmBot):
+    def __init__(self):
+        discord_bot.__init__(self, "MzU1NTgwMDk1NTQ2NTIzNjQ5.DJO3-A.TKkY-GNO3kUTenjmnMfs6g-Dcsc", "ilm")
+
+if sys.argv[1] == "telegram":
+    TelegramIlmBot()
+elif sys.argv[1] == "discord":
+    DiscordIlmBot()
