@@ -53,8 +53,8 @@ $1, sa oled meditsiiniline ime
 $1, sa näed ikka vahva välja! See kleit su seljas on pilapoest, eks?
 $1, kao eemale! Sa seisad mu aura peal!
 $1 on mees, kes ei tee palju sõnu. Aga möliseb ikkagi rohkem kui vaja.
-. o O ( Kus on geenipolitsei? Siin on mingi jälk $1 ) O o .
-. o O ( Millise kivi alt küll sellised lontrused nagu $1 välja ronivad.. ) O o .
+Kus on geenipolitsei? Siin on mingi jälk $1.
+Millise kivi alt küll sellised lontrused nagu $1 välja ronivad...
 $1, kes ma Sinu arust olen? Kärbsepaber idiootidele?
 $1, on Sul minut aega? Räägi mulle ära kõik, mida Sa üldse tead.
 $1 on nii loll, et sobiks ideaalselt Võrno saatesse
