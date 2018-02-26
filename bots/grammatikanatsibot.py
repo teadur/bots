@@ -1,20 +1,17 @@
-import lxml.html
+import lxml.html, sys
 import json
 import urllib.request
 import urllib.parse
-from bot_backend import bot
-import sys
-import telegram
+from telegram_backend import telegram_bot
+from discord_backend import discord_bot
 from oxford_dictionary import query_oxford_english
 
-class GrammarBot(bot):
-	def send_response(self, bot, update, args):
+class GrammarBot(object):
+	def create_response(self, args):
 		if len(args) > 1:
-			bot.sendMessage(chat_id=update.message.chat_id, text="Lollakas! Tegu on sõnaraamatuga mitte sõnaderaamatuga!")
-			return
+			return [("string", "Lollakas! Tegu on sõnaraamatuga mitte sõnaderaamatuga!")]
 		elif not args:
-			bot.sendMessage(chat_id=update.message.chat_id, text="Nii loll et ei oska isegi sõnaraamatult küsida jah!")
-			return
+			return [("string", "Nii loll et ei oska isegi sõnaraamatult küsida jah!")]
 		try:
 
 			response = query_oxford_english(args[0])
@@ -22,9 +19,8 @@ class GrammarBot(bot):
 				request = urllib.request.urlopen("http://www.eki.ee/dict/ekss/index.cgi?Q=" + urllib.parse.quote(args[0]) + "&Z=json&X=jvee211116&C01=1")
 				html = request.read()
 				data = json.loads(html.decode('utf-8'))
-				if not data['result']:				
-					bot.sendMessage(chat_id=update.message.chat_id, text="Ise mõtlesid selle sõna välja või. Lollakas!")
-					return
+				if not data['result']:
+					return [("string", "Ise mõtlesid selle sõna välja või. Lollakas!")]
 				else:
 					document = lxml.html.document_fromstring(data['result'])
 					response = document.text_content()
@@ -33,15 +29,18 @@ class GrammarBot(bot):
 			print (e)
 
 		if len(response) > 4096:
-			bot.sendMessage(chat_id=update.message.chat_id, text=response[:4090]+"...")
-			return
-		bot.sendMessage(chat_id=update.message.chat_id, text=response)
-		
-	def add_callback(self, bot, update, args, chat_data, user_data):
-		bot.sendMessage(chat_id=update.message.chat_id, text="Sõnaraamatusse sina loll küll midagi lisada ei tohiks!")
+			return [("string", response[:4090]+"...")]
+		return [("string", response)]
 
-filename = ""
-token='228030866:AAGFH13_njpLJA2qNhOQDAfaSGxo0y2Ggco'
-command = 'targuta'
+class TelegramGrammarBot(telegram_bot, GrammarBot):
+	def __init__(self):
+		telegram_bot.__init__(self, '228030866:AAGFH13_njpLJA2qNhOQDAfaSGxo0y2Ggco', "targuta")
 
-GrammarBot(token, filename, command)
+class DiscordGrammarBot(discord_bot, GrammarBot):
+	def __init__(self):
+		discord_bot.__init__(self, "MzU1NTgzMzYwMzI1NjQ4Mzk0.DJO6Uw.YP_WH7Oo76QWJc9Y2ZNMIeV53Ys", "targuta")
+
+if sys.argv[1] == "telegram":
+	TelegramGrammarBot()
+elif sys.argv[1] == "discord":
+	DiscordGrammarBot()
