@@ -2,6 +2,13 @@ from telegram_backend import telegram_bot
 from discord_backend import discord_bot
 import lxml.etree as ET
 import urllib.request, sys
+import requests, lxml.html as html
+
+def get_kp_index():
+    response = requests.get("http://www.aurora-service.eu/aurora-forecast/")
+    page = html.document_fromstring(response.text)
+    element = page.xpath("//*[contains(text(), 'Right now, the aurora is predicted to be: ')]/*[contains(text(), 'Kp')]")[0].text
+    return (element.split(" ")[3])
 
 def get_xml():
     req = urllib.request.Request(
@@ -99,6 +106,8 @@ class IlmBot(object):
             response.append(("string", "lausmärt"))
         elif place == "tõde":
             response.append(("photo", 'ilm.jpg'))
+        elif place == "aurora":
+            response.append(("string", get_kp_index()))
         else:
             response.append(("string", get_weather(place)))
         if not response:
