@@ -112,9 +112,12 @@ class IlmBot(object):
             response.append(("string", "Not found, try one of the following: \n" + get_placenames()))
         return response
 
+    def send_weather(self, bot, job):
+        bot.sendMessage(chat_id="-1001071499716", text=self.create_response([]))
+
 class TelegramIlmBot(telegram_bot, IlmBot):
     def __init__(self):
-        telegram_bot.__init__(self, "348367169:AAG4xGta0G35xRPn8nDQYngld12x-rxrCE4", "ilm", kick_on_empty=False)
+        telegram_bot.__init__(self, "ilm", kick_on_empty=False)
 
 class DiscordIlmBot(discord_bot, IlmBot):
     def __init__(self):

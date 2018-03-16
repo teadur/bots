@@ -26,7 +26,7 @@ class ComplimentBot(common_bot):
 class TelegramComplimentBot(ComplimentBot, telegram_bot):
     def __init__(self):
         ComplimentBot.__init__(self, "compliment.txt")
-        telegram_bot.__init__(self, '261401432:AAGLQFIehbRt6zH2TNYTJyvr2PUbnfYRcew', 'compliment', add_command=True)
+        telegram_bot.__init__(self, 'compliment', add_command=True)
 
 class DiscordComplimentBot(ComplimentBot, discord_bot):
     def __init__(self):

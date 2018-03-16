@@ -34,7 +34,7 @@ class GrammarBot(object):
 
 class TelegramGrammarBot(telegram_bot, GrammarBot):
 	def __init__(self):
-		telegram_bot.__init__(self, '228030866:AAGFH13_njpLJA2qNhOQDAfaSGxo0y2Ggco', "targuta")
+		telegram_bot.__init__(self, "targuta")
 
 class DiscordGrammarBot(discord_bot, GrammarBot):
 	def __init__(self):

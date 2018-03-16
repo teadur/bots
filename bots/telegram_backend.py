@@ -4,9 +4,10 @@ from telegram.ext import CommandHandler
 from telegram.ext import MessageHandler, Filters
 import requests
 import configparser
+import datetime
 
 class telegram_bot(object):
-    def __init__(self, token, command, add_command=False, kick_on_empty = True):
+    def __init__(self, command, add_command=False, kick_on_empty = True):
         config = configparser.ConfigParser()
         config.read('api_keys.ini')
         self.add_command = add_command
@@ -25,6 +26,9 @@ class telegram_bot(object):
 
         self.echo_handler = MessageHandler(Filters.all, self.echo)
         self.dispatcher.add_handler(self.echo_handler)
+        #hack for now
+        if (command == "ilm"):
+            self.updater.job_queue.run_daily(self.send_weather, datetime.time(8,0,0,0))
         self.updater.start_polling()
 
     def remove_callback(self, bot, update, args, chat_data, user_data):

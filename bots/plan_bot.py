@@ -144,7 +144,7 @@ access token: plfreu"""))
 class TelegramPlanBot(PlanBot, telegram_bot):
     def __init__(self):
         PlanBot.__init__(self, "plan.txt")
-        telegram_bot.__init__(self, '265390616:AAGquQAVoMm0WO7HsmEKPscLwbYNvd3fsdE', 'plan', add_command=True)
+        telegram_bot.__init__(self, 'plan', add_command=True)
 
 class DiscordPlantBot(PlanBot, discord_bot):
     def __init__(self):
