@@ -84,7 +84,7 @@ def get_weather(place):
                 measurement += comment2tag[child.tag][1] + "\n"
         else:
             weather += child.tag + " " + child.text + units.get(child.tag, "") + "\n"
-    returnvalue = "Weather in " + place + ":\n" + measurement + weather
+    returnvalue = "Weather in " + place + ":\n" + measurement + weather + "Kp index: " + get_kp_index()
     return returnvalue
 
 def get_placenames():
@@ -106,8 +106,6 @@ class IlmBot(object):
             response.append(("string", "lausmärt"))
         elif place == "tõde":
             response.append(("photo", 'ilm.jpg'))
-        elif place == "aurora":
-            response.append(("string", get_kp_index()))
         else:
             response.append(("string", get_weather(place)))
         if not response:
