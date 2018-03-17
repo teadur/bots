@@ -28,7 +28,7 @@ class telegram_bot(object):
         self.dispatcher.add_handler(self.echo_handler)
         #hack for now
         if (command == "ilm"):
-            self.updater.job_queue.run_daily(self.send_weather, datetime.time(8,0,0,0))
+            self.updater.job_queue.run_daily(self.send_weather, datetime.time(6,0,0,0))
         self.updater.start_polling()
 
     def remove_callback(self, bot, update, args, chat_data, user_data):

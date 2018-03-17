@@ -113,7 +113,7 @@ class IlmBot(object):
         return response
 
     def send_weather(self, bot, job):
-        bot.sendMessage(chat_id="-1001071499716", text=self.create_response([]))
+        bot.sendMessage(chat_id="-1001071499716", text=get_weather("Tallinn"))
 
 class TelegramIlmBot(telegram_bot, IlmBot):
     def __init__(self):
