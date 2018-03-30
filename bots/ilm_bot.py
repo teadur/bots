@@ -67,7 +67,10 @@ def get_weather(place):
 
     for n in xml.xpath("//name"):
         n.text = n.text.lower()
-    weather_subtree = xml.xpath("//station[name[text()[contains(.,'" + place.lower() + "')]]]")[0]
+    weather_subtree = xml.xpath("//station[name[text()[contains(.,'" + place.lower() + "')]]]")
+    if (weather_subtree == []):
+        return None
+    weather_subtree = weather_subtree[0]
 
     #print ET.tostring(weather_subtree, pretty_print = True)
 
@@ -94,7 +97,7 @@ def get_placenames():
     for p in xml.xpath("//station/name"):
         placenames.append(p.text)
 
-    return " ".join(placenames)
+    return "\n".join(sorted(placenames))
 
 class IlmBot(object):
     def create_response(self, args):
@@ -108,7 +111,8 @@ class IlmBot(object):
             response.append(("photo", 'ilm.jpg'))
         else:
             response.append(("string", get_weather(place)))
-        if not response:
+        if not response[0][1]:
+            response.pop(0)
             response.append(("string", "Not found, try one of the following: \n" + get_placenames()))
         return response
 
