@@ -5,12 +5,24 @@ import urllib.request, sys
 import requests, lxml.html as html
 from datetime import datetime
 
-def get_prognosis():
+def get_prognosis(first = True):
     xml = get_xml("http://www.ilmateenistus.ee/ilma_andmed/xml/forecast.php")
-    prognosis = xml.xpath("//forecast")[0].xpath("//day//text")[0]
-    date = xml.xpath("//forecast")[0].get("date")
-    date = datetime.strptime(date, "%Y-%m-%d")
-    return date.strftime("%d-%m-%Y") + "\n" + prognosis.text
+    if first:
+        prognosis = xml.xpath("//forecast")[0].xpath("//day//text")[0]
+        date = xml.xpath("//forecast")[0].get("date")
+        date = datetime.strptime(date, "%Y-%m-%d")
+        return date.strftime("%d-%m-%Y") + "\n" + prognosis.text
+    else:
+        prognosis = ""
+        for forecast in xml.xpath("//forecast"):
+            date = forecast.get("date")
+            date = datetime.strptime(date, "%Y-%m-%d")
+            date = date.strftime("%d-%m-%Y")
+            day = forecast.xpath("//day//text")[0]
+            night = forecast.xpath("//night//text")[0]
+            prognosis += date + "\nÖö:\n" + night.text +"\nPäev:\n" + day.text + "\n"
+        return prognosis
+
 
 def get_kp_index():
     response = requests.get("http://www.aurora-service.eu/aurora-forecast/")
@@ -118,7 +130,7 @@ class IlmBot(object):
         elif place == "tõde":
             response.append(("photo", 'ilm.jpg'))
         elif place == "prognoos":
-            response.append(("string", get_prognosis()))
+            response.append(("string", get_prognosis(False)))
         else:
             response.append(("string", get_weather(place)))
         if not response[0][1]:
