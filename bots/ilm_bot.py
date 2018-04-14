@@ -3,6 +3,14 @@ from discord_backend import discord_bot
 import lxml.etree as ET
 import urllib.request, sys
 import requests, lxml.html as html
+from datetime import datetime
+
+def get_prognosis():
+    xml = get_xml("http://www.ilmateenistus.ee/ilma_andmed/xml/forecast.php")
+    prognosis = xml.xpath("//forecast")[0].xpath("//day//text")[0]
+    date = xml.xpath("//forecast")[0].get("date")
+    date = datetime.strptime(date, "%Y-%m-%d")
+    return date.strftime("%d-%m-%Y") + "\n" + prognosis.text
 
 def get_kp_index():
     response = requests.get("http://www.aurora-service.eu/aurora-forecast/")
@@ -10,9 +18,9 @@ def get_kp_index():
     element = page.xpath("//*[contains(text(), 'Right now, the aurora is predicted to be: ')]/*[contains(text(), 'Kp')]")[0].text
     return (element.split(" ")[3])
 
-def get_xml():
+def get_xml(url):
     req = urllib.request.Request(
-    'http://www.ilmateenistus.ee/ilma_andmed/xml/observations.php',
+    url,
     data=None,
     headers={
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.47 Safari/537.36'
@@ -30,7 +38,7 @@ def get_xml():
 
 def get_weather(place):
     weather = measurement = ""
-    xml = get_xml()
+    xml = get_xml('http://www.ilmateenistus.ee/ilma_andmed/xml/observations.php')
 
     units = {
     "visibility":" km",
@@ -91,7 +99,7 @@ def get_weather(place):
     return returnvalue
 
 def get_placenames():
-    xml = get_xml()
+    xml = get_xml('http://www.ilmateenistus.ee/ilma_andmed/xml/observations.php')
     placenames = []
 
     for p in xml.xpath("//station/name"):
@@ -109,6 +117,8 @@ class IlmBot(object):
             response.append(("string", "lausmärt"))
         elif place == "tõde":
             response.append(("photo", 'ilm.jpg'))
+        elif place == "prognoos":
+            response.append(("string", get_prognosis()))
         else:
             response.append(("string", get_weather(place)))
         if not response[0][1]:
@@ -117,6 +127,7 @@ class IlmBot(object):
         return response
 
     def send_weather(self, bot, job):
+        bot.sendMessage(chat_id="-1001071499716", text=get_prognosis())
         bot.sendMessage(chat_id="-1001071499716", text=get_weather("Tallinn"))
 
 class TelegramIlmBot(telegram_bot, IlmBot):
