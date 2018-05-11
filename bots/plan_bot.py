@@ -103,6 +103,15 @@ class PlanBot(common_bot):
         elif " ".join(args).lower() == "flap slap":
             response.append(("photo", 'flapslap.jpg'))
             response.append(("string", ":))))"))
+        elif " ".join(args).lower() == "is it friday":
+            if (datetime.datetime.today().weekday() == 4):
+                vastus = "YES!!!"
+                with open("võtame.txt", "r", encoding = "UTF-8") as f:
+                    lines = f.readlines()
+                    response.append(("string", lines[randint(0, len(lines) - 1)]))
+            else:
+                vastus = "NO :(("
+            response.append(("string", vastus))
         elif " ".join(args).lower() == "calmyotits":
             response.append(("mp4", 'bill.mp4'))
         elif " ".join(args).lower() == "clamyotits":
