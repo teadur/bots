@@ -75,11 +75,11 @@ def get_weather(place):
      30: "põrgu"}
 
     wind_comment = {
-    3:"kerged tupetuuled",
-    6:"oh sa lits, kus puhub",
-    9:"assa tuss, mis tuisk",
-    12:"rape wind",
-    15:"suema queef"}
+    6:"kerged tupetuuled",
+    9:"oh sa lits, kus puhub",
+    12:"assa tuss, mis tuisk",
+    15:"rape wind",
+    18:"suema queef"}
 
     comment2tag = {
     "airtemperature":[temp_comment,"surm"],
