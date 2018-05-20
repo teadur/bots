@@ -107,7 +107,7 @@ def get_weather(place):
                 measurement += comment2tag[child.tag][1] + "\n"
         else:
             weather += child.tag + " " + child.text + units.get(child.tag, "") + "\n"
-    returnvalue = "Weather in " + place + ":\n" + measurement + weather + "Kp index: " + get_kp_index()
+    returnvalue = "Weather in " + weather_subtree.xpath("name")[0].text + ":\n" + measurement + weather + "Kp index: " + get_kp_index()
     return returnvalue
 
 def get_placenames():
