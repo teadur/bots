@@ -18,8 +18,8 @@ def get_prognosis(first = True):
             date = forecast.get("date")
             date = datetime.strptime(date, "%Y-%m-%d")
             date = date.strftime("%d-%m-%Y")
-            day = forecast.xpath("//day//text")[0]
-            night = forecast.xpath("//night//text")[0]
+            day = forecast.xpath("day/text")[0]
+            night = forecast.xpath("night/text")[0]
             prognosis += date + "\nÖö:\n" + night.text +"\nPäev:\n" + day.text + "\n"
         return prognosis
 
