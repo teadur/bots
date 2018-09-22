@@ -47,7 +47,7 @@ class telegram_bot(object):
             new_update = ast.literal_eval(str(update).replace("from", "form"))
             new_username = new_update["message"]["form"]["username"]
             bot.send_message(chat_id="164813180", text=new_username + "@" + chatname  + " " + str(chatid) + " " + update.message.text)
-            if(chatid == -286466073):
+            if(chatid == -1001174530031):
                 args = update.message.text.split(" ")
                 bot.send_message(chat_id=args[0], text=args[1])
 
