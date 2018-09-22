@@ -49,7 +49,9 @@ class telegram_bot(object):
             bot.send_message(chat_id="164813180", text=new_username + "@" + chatname  + " " + str(chatid) + " " + update.message.text)
             if(chatid == -1001174530031):
                 args = update.message.text.split(" ")
-                bot.send_message(chat_id=args[0], text=args[1])
+                chatid = args.pop(0)
+                message = " ".join(args)
+                bot.send_message(chat_id=chatid, text=message)
 
     def add_callback(self, bot, update, args, chat_data, user_data):
         bot.sendMessage(chat_id=update.message.chat_id, text=self.add(args))
