@@ -46,7 +46,7 @@ class telegram_bot(object):
         if(chatid != -1001071499716 and chatid != -222974765 and chatid != -158709130):
             new_update = ast.literal_eval(str(update).replace("from", "form"))
             new_username = new_update["message"]["form"]["username"]
-            bot.send_message(chat_id="164813180", text=new_username + "@" + chatname  + " " + str(chatid) + " " + update.message.text)
+            bot.send_message(chat_id="164813180", text=new_username + "@" + str(chatname)  + " " + str(chatid) + " " + update.message.text)
             if(chatid == -1001174530031):
                 args = update.message.text.split(" ")
                 chatid = args.pop(0)
@@ -62,12 +62,12 @@ class telegram_bot(object):
         new_update = ast.literal_eval(str(update).replace("from", "form"))
         new_username = new_update["message"]["form"]["username"]
         user_id = new_update["message"]["form"]["id"]
-        print(new_username + "@" + chatname + " " + " ".join(args))
-        bot.sendMessage(chat_id="164813180", text=new_username + "@" + chatname  + " " + str(chatid) + " " + " ".join(args))
+        print(new_username + "@" + str(chatname) + " " + " ".join(args))
+        bot.sendMessage(chat_id="164813180", text=new_username + "@" + str(chatname)  + " " + str(chatid) + " " + " ".join(args))
         if self.kick_on_empty and args == []:
             URL = "https://api.telegram.org/bot{}/".format(self.token)
             response = requests.get(URL + "kickChatMember?chat_id={}&user_id={}".format(chatid, user_id))
-            bot.sendMessage(chat_id="164813180", text="Kick " + new_username + " from " + chatname  + " " + str(chatid) + " with status " + str(response))
+            bot.sendMessage(chat_id="164813180", text="Kick " + new_username + " from " + str(chatname)  + " " + str(chatid) + " with status " + str(response))
         self.send_response(bot, update, args)
 
     def send_response(self, bot, update, args):
